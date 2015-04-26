@@ -72,12 +72,14 @@ public class World {
         // Test with random values
         Marker marker = new Marker(new Point(0, 0) , 10, MarkerType.START);
         markersPosition.add(marker);
-        marker = new Marker(new Point(10, 0) , 10, MarkerType.COIN);
+        marker = new Marker(new Point(5, 0) , 10, MarkerType.COIN);
+        markersPosition.add(marker);
+        marker = new Marker(new Point(10, 0) , 10, MarkerType.END);
         markersPosition.add(marker);
 
 		generateLevel();
 
-        this.bob = new Bob(startPosition.x, startPosition.y + 0.5f);
+        this.bob = new Bob(startPosition.x, startPosition.y + Platform.PLATFORM_HEIGHT);
 
 		this.heightSoFar = 0;
 		this.score = 0;
@@ -105,7 +107,9 @@ public class World {
                             + Spring.SPRING_HEIGHT / 2);
                     springs.add(spring);
                 }
-
+                if(markersPosition.get(i).getType() == MarkerType.END) {
+                    this.castle = new Castle(markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
                     Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y
                             + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
@@ -169,7 +173,7 @@ public class World {
 		checkPlatformCollisions();
 		checkSquirrelCollisions();
 		checkItemCollisions();
-		//checkCastleCollisions();
+		checkCastleCollisions();
 	}
 
 	private void checkPlatformCollisions () {
