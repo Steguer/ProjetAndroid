@@ -58,8 +58,9 @@ public class World {
 	public int score;
 	public int state;
 
+    private Point startPosition;
+
 	public World (WorldListener listener) {
-		this.bob = new Bob(5, 1);
 		this.platforms = new ArrayList<Platform>();
 		this.springs = new ArrayList<Spring>();
 		this.squirrels = new ArrayList<Squirrel>();
@@ -67,17 +68,20 @@ public class World {
         this.markersPosition = new ArrayList<Marker>();
 		this.listener = listener;
 		rand = new Random();
+
+        // Test with random values
+        Marker marker = new Marker(new Point(0, 0) , 10, MarkerType.START);
+        markersPosition.add(marker);
+        marker = new Marker(new Point(10, 0) , 10, MarkerType.COIN);
+        markersPosition.add(marker);
+
 		generateLevel();
+
+        this.bob = new Bob(startPosition.x, startPosition.y + 0.5f);
 
 		this.heightSoFar = 0;
 		this.score = 0;
 		this.state = WORLD_STATE_RUNNING;
-
-        // Test with random values
-        Marker marker = new Marker(new Point(10, 0) , 10, MarkerType.STANDARD);
-        markersPosition.add(marker);
-        marker = new Marker(new Point(10, 0) , 10, MarkerType.COIN);
-        markersPosition.add(marker);
 	}
 
     /**
@@ -91,8 +95,11 @@ public class World {
                 platforms.add(platform);
             }
             else{
-                platform = new Platform(Platform.PLATFORM_STATE_NORMAL, markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
                 platforms.add(platform);
+                if(markersPosition.get(i).getType() == MarkerType.START) {
+                    this.startPosition = markersPosition.get(i).getPosition();
+                }
                 if (markersPosition.get(i).getType() == MarkerType.TRAMPOLINE) {
                     Spring spring = new Spring(platform.position.x, platform.position.y + Platform.PLATFORM_HEIGHT / 2
                             + Spring.SPRING_HEIGHT / 2);
@@ -124,7 +131,7 @@ public class World {
 	}
 
 	private void updateBob (float deltaTime, float accelX) {
-		if (bob.state != Bob.BOB_STATE_HIT && bob.position.y <= 0.5f) bob.hitPlatform();
+		//if (bob.state != Bob.BOB_STATE_HIT && bob.position.y <= 0.5f) bob.hitPlatform();
 		if (bob.state != Bob.BOB_STATE_HIT) bob.velocity.x = -accelX / 10 * Bob.BOB_MOVE_VELOCITY;
 		bob.update(deltaTime);
 		heightSoFar = Math.max(bob.position.y, heightSoFar);
@@ -175,9 +182,10 @@ public class World {
 				if (bob.bounds.overlaps(platform.bounds)) {
 					bob.hitPlatform();
 					listener.jump();
-					if (rand.nextFloat() > 0.5f) {
+                    // Disable platform destruction
+					/*if (rand.nextFloat() > 0.5f) {
 						platform.pulverize();
-					}
+					}*/
 					break;
 				}
 			}
@@ -229,7 +237,7 @@ public class World {
 	}
 
 	private void checkGameOver () {
-		if (heightSoFar - 7.5f > bob.position.y) {
+		if (-7.0f > bob.position.y) {
 			state = WORLD_STATE_GAME_OVER;
 		}
 	}
