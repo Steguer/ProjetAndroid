@@ -11,13 +11,17 @@ import java.util.List;
  */
 public class GameController {
 
+    private  List<Marker> markersList;
+    private  Bitmap background;
     /**
      * Create a game with the detected markers
      * @param markers
      * @param backgroundImage
      * @return true if the game has correctly been created
      */
-    public boolean createGame(List<Marker> markers, Bitmap backgroundImage){
+    public boolean createGame(List<Marker> markers, Bitmap backgroundImage) {
+
+
         return true;
     }
 

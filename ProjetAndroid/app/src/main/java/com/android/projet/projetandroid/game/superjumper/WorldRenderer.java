@@ -57,7 +57,7 @@ public class WorldRenderer {
 		renderPlatforms();
 		renderItems();
 		renderSquirrels();
-		renderCastle();
+		//renderCastle();
 		batch.end();
 	}
 

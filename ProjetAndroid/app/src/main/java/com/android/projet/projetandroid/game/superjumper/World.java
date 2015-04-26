@@ -16,6 +16,10 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
+import android.graphics.Point;
+
+import com.android.projet.projetandroid.markerAugReality.Marker;
+import com.android.projet.projetandroid.markerAugReality.MarkerType;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ public class World {
 	public final List<Spring> springs;
 	public final List<Squirrel> squirrels;
 	public final List<Coin> coins;
+    public final List<Marker> markersPosition;
 	public Castle castle;
 	public final WorldListener listener;
 	public final Random rand;
@@ -59,6 +64,7 @@ public class World {
 		this.springs = new ArrayList<Spring>();
 		this.squirrels = new ArrayList<Squirrel>();
 		this.coins = new ArrayList<Coin>();
+        this.markersPosition = new ArrayList<Marker>();
 		this.listener = listener;
 		rand = new Random();
 		generateLevel();
@@ -66,41 +72,46 @@ public class World {
 		this.heightSoFar = 0;
 		this.score = 0;
 		this.state = WORLD_STATE_RUNNING;
+
+        // Test with random values
+        Marker marker = new Marker(new Point(10, 0) , 10, MarkerType.STANDARD);
+        markersPosition.add(marker);
+        marker = new Marker(new Point(10, 0) , 10, MarkerType.COIN);
+        markersPosition.add(marker);
 	}
 
+    /**
+     * Generate the good asset depending to markers
+     */
 	private void generateLevel () {
-		float y = Platform.PLATFORM_HEIGHT / 2;
-		float maxJumpHeight = Bob.BOB_JUMP_VELOCITY * Bob.BOB_JUMP_VELOCITY / (2 * -gravity.y);
-		while (y < WORLD_HEIGHT - WORLD_WIDTH / 2) {
-			int type = rand.nextFloat() > 0.8f ? Platform.PLATFORM_TYPE_MOVING : Platform.PLATFORM_TYPE_STATIC;
-			float x = rand.nextFloat() * (WORLD_WIDTH - Platform.PLATFORM_WIDTH) + Platform.PLATFORM_WIDTH / 2;
+		for(int i=0; i<markersPosition.size(); ++i) {
+            Platform  platform;
+            if(markersPosition.get(i).getType() == MarkerType.MOVING) {
+                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                platforms.add(platform);
+            }
+            else{
+                platform = new Platform(Platform.PLATFORM_STATE_NORMAL, markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                platforms.add(platform);
+                if (markersPosition.get(i).getType() == MarkerType.TRAMPOLINE) {
+                    Spring spring = new Spring(platform.position.x, platform.position.y + Platform.PLATFORM_HEIGHT / 2
+                            + Spring.SPRING_HEIGHT / 2);
+                    springs.add(spring);
+                }
 
-			Platform platform = new Platform(type, x, y);
-			platforms.add(platform);
+                if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
+                    Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y
+                            + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
+                    squirrels.add(squirrel);
+                }
 
-			if (rand.nextFloat() > 0.9f && type != Platform.PLATFORM_TYPE_MOVING) {
-				Spring spring = new Spring(platform.position.x, platform.position.y + Platform.PLATFORM_HEIGHT / 2
-					+ Spring.SPRING_HEIGHT / 2);
-				springs.add(spring);
-			}
-
-			if (y > WORLD_HEIGHT / 3 && rand.nextFloat() > 0.8f) {
-				Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y
-					+ Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
-				squirrels.add(squirrel);
-			}
-
-			if (rand.nextFloat() > 0.6f) {
-				Coin coin = new Coin(platform.position.x + rand.nextFloat(), platform.position.y + Coin.COIN_HEIGHT
-					+ rand.nextFloat() * 3);
-				coins.add(coin);
-			}
-
-			y += (maxJumpHeight - 0.5f);
-			y -= rand.nextFloat() * (maxJumpHeight / 3);
+                if (rand.nextFloat() > 0.6f) {
+                    Coin coin = new Coin(platform.position.x + rand.nextFloat(), platform.position.y + Coin.COIN_HEIGHT
+                            + rand.nextFloat() * 3);
+                    coins.add(coin);
+                }
+            }
 		}
-
-		castle = new Castle(WORLD_WIDTH / 2, y);
 	}
 
 	public void update (float deltaTime, float accelX) {
@@ -151,7 +162,7 @@ public class World {
 		checkPlatformCollisions();
 		checkSquirrelCollisions();
 		checkItemCollisions();
-		checkCastleCollisions();
+		//checkCastleCollisions();
 	}
 
 	private void checkPlatformCollisions () {

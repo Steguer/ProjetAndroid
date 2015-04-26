@@ -130,7 +130,7 @@ public class GameScreen extends ScreenAdapter {
 		
 		// should work also with Gdx.input.isPeripheralAvailable(Peripheral.Accelerometer)
 		if (appType == ApplicationType.Android || appType == ApplicationType.iOS) {
-			world.update(deltaTime, Gdx.input.getAccelerometerX());
+			world.update(deltaTime, -Gdx.input.getAccelerometerY());
 		} else {
 			float accel = 0;
 			if (Gdx.input.isKeyPressed(Keys.DPAD_LEFT)) accel = 5f;
