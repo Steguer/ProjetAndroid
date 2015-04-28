@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -29,7 +30,8 @@ public class MainMenuScreen extends ScreenAdapter {
 	Rectangle soundBounds;
 	Rectangle playBounds;
 	Rectangle highscoresBounds;
-	Rectangle helpBounds;
+	Rectangle mapBounds;
+    Rectangle saveBounds;
 	Vector3 touchPoint;
 
 	public MainMenuScreen (SuperJumper game) {
@@ -38,9 +40,10 @@ public class MainMenuScreen extends ScreenAdapter {
 		guiCam = new OrthographicCamera(320, 480);
 		guiCam.position.set(320 / 2, 480 / 2, 0);
 		soundBounds = new Rectangle(0, 0, 64, 64);
-		playBounds = new Rectangle(160 - 150, 200 + 18, 300, 36);
-		highscoresBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
-		helpBounds = new Rectangle(160 - 150, 200 - 18 - 36, 300, 36);
+		playBounds = new Rectangle(160 - 150, 200 + 36 + 18, 300, 36);
+		highscoresBounds = new Rectangle(160 - 150, 200 + 18, 300, 36);
+		mapBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
+        saveBounds = new Rectangle(160 - 150, 200 - 18 - 36, 300, 36);
 		touchPoint = new Vector3();
 	}
 
@@ -58,11 +61,20 @@ public class MainMenuScreen extends ScreenAdapter {
 				game.setScreen(new HighscoresScreen(game));
 				return;
 			}
-			if (helpBounds.contains(touchPoint.x, touchPoint.y)) {
+			if (mapBounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.clickSound);
-				game.setScreen(new HelpScreen(game));
+
+                // Add here the behavior fot a click on map
+
 				return;
 			}
+            if (saveBounds.contains(touchPoint.x, touchPoint.y)) {
+                Assets.playSound(Assets.clickSound);
+
+                // Add here the behavior fot a click on save
+
+                return;
+            }
 			if (soundBounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.clickSound);
 				Settings.soundEnabled = !Settings.soundEnabled;
@@ -89,9 +101,19 @@ public class MainMenuScreen extends ScreenAdapter {
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.logo, 160 - 274 / 2, 480 - 10 - 142, 274, 142);
-		game.batcher.draw(Assets.mainMenu, 10, 200 - 110 / 2, 300, 110);
+		game.batcher.draw(Assets.mainMenu, 10, 200 - 110 / 2, 300, 145);
 		game.batcher.draw(Settings.soundEnabled ? Assets.soundOn : Assets.soundOff, 0, 0, 64, 64);
-		game.batcher.end();	
+
+		game.batcher.end();
+
+        // To debug menu
+        /*ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(guiCam.combined);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(saveBounds.x, saveBounds.y, saveBounds.width, saveBounds.height);
+        shapeRenderer.end();*/
+
 	}
 
 	@Override

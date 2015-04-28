@@ -65,12 +65,12 @@ public class Assets {
 		backgroundRegion = new TextureRegion(background, 0, 0, 320, 480);
 
 		items = loadTexture("data/items.png");
-		mainMenu = new TextureRegion(items, 0, 224, 300, 110);
+		mainMenu = new TextureRegion(items, 0, 224, 300, 145);
 		pauseMenu = new TextureRegion(items, 224, 128, 192, 96);
 		ready = new TextureRegion(items, 320, 224, 192, 32);
 		gameOver = new TextureRegion(items, 352, 256, 160, 96);
 		highScoresRegion = new TextureRegion(Assets.items, 0, 257, 300, 110 / 3);
-		logo = new TextureRegion(items, 0, 352, 274, 142);
+		logo = new TextureRegion(items, 235, 370, 274, 142);
 		soundOff = new TextureRegion(items, 0, 0, 64, 64);
 		soundOn = new TextureRegion(items, 64, 0, 64, 64);
 		arrow = new TextureRegion(items, 0, 64, 64, 64);
