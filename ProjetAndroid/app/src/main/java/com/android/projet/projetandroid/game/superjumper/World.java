@@ -72,7 +72,7 @@ public class World {
         // Test with random values
         Marker marker = new Marker(new Point(0, 0) , 10, MarkerType.START);
         markersPosition.add(marker);
-        marker = new Marker(new Point(5, 0) , 10, MarkerType.MOVING);
+        marker = new Marker(new Point(5, 0) , 10, MarkerType.ENEMY);
         markersPosition.add(marker);
         marker = new Marker(new Point(10, 0) , 10, MarkerType.END);
         markersPosition.add(marker);
