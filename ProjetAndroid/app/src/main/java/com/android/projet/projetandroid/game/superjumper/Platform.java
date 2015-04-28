@@ -16,6 +16,8 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Platform extends DynamicGameObject {
 	public static final float PLATFORM_WIDTH = 2;
 	public static final float PLATFORM_HEIGHT = 0.5f;
@@ -25,10 +27,12 @@ public class Platform extends DynamicGameObject {
 	public static final int PLATFORM_STATE_PULVERIZING = 1;
 	public static final float PLATFORM_PULVERIZE_TIME = 0.2f * 4;
 	public static final float PLATFORM_VELOCITY = 2;
+    public static final float PLATFORM_MOVE = 1;
 
 	int type;
 	int state;
 	float stateTime;
+    final Vector2 initPosition;
 
 	public Platform (int type, float x, float y) {
 		super(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT);
@@ -38,6 +42,7 @@ public class Platform extends DynamicGameObject {
 		if (type == PLATFORM_TYPE_MOVING) {
 			velocity.x = PLATFORM_VELOCITY;
 		}
+        initPosition = position.cpy();
 	}
 
 	public void update (float deltaTime) {
@@ -46,13 +51,11 @@ public class Platform extends DynamicGameObject {
 			bounds.x = position.x - PLATFORM_WIDTH / 2;
 			bounds.y = position.y - PLATFORM_HEIGHT / 2;
 
-			if (position.x < PLATFORM_WIDTH / 2) {
+			if (position.x < PLATFORM_WIDTH / 2 || position.x < initPosition.x - PLATFORM_MOVE) {
 				velocity.x = -velocity.x;
-				position.x = PLATFORM_WIDTH / 2;
 			}
-			if (position.x > World.WORLD_WIDTH - PLATFORM_WIDTH / 2) {
+			if (position.x > World.WORLD_WIDTH - PLATFORM_WIDTH / 2 || position.x > initPosition.x + PLATFORM_MOVE) {
 				velocity.x = -velocity.x;
-				position.x = World.WORLD_WIDTH - PLATFORM_WIDTH / 2;
 			}
 		}
 

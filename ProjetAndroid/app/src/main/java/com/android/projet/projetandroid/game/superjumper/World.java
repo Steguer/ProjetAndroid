@@ -72,7 +72,7 @@ public class World {
         // Test with random values
         Marker marker = new Marker(new Point(0, 0) , 10, MarkerType.START);
         markersPosition.add(marker);
-        marker = new Marker(new Point(5, 0) , 10, MarkerType.COIN);
+        marker = new Marker(new Point(5, 0) , 10, MarkerType.MOVING);
         markersPosition.add(marker);
         marker = new Marker(new Point(10, 0) , 10, MarkerType.END);
         markersPosition.add(marker);
@@ -115,8 +115,7 @@ public class World {
                             + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
                     squirrels.add(squirrel);
                 }
-
-                if (rand.nextFloat() > 0.6f) {
+                if (markersPosition.get(i).getType() == MarkerType.COIN) {
                     Coin coin = new Coin(platform.position.x + rand.nextFloat(), platform.position.y + Coin.COIN_HEIGHT
                             + rand.nextFloat() * 3);
                     coins.add(coin);
