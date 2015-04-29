@@ -7,10 +7,12 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.android.projet.projetandroid.game.superjumper.SuperJumper;
 
 public class AndroidLauncher extends AndroidApplication {
+    ActionResolverAndroid actionResolver;
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new SuperJumper(), config);
+        actionResolver = new ActionResolverAndroid(this);
+		initialize(new SuperJumper(actionResolver), config);
 	}
 }

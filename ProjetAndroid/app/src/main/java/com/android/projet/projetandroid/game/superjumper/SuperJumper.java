@@ -16,14 +16,20 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
+import com.android.projet.projetandroid.game.ActionResolver;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SuperJumper extends Game {
 	// used by all screens
 	public SpriteBatch batcher;
-	
-	@Override
+    public ActionResolver actionResolver;
+
+    public SuperJumper(ActionResolver actionResolver) {
+       this.actionResolver = actionResolver;
+    }
+
+    @Override
 	public void create () {
 		batcher = new SpriteBatch();
 		Settings.load();

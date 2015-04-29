@@ -16,6 +16,10 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
+import android.content.Intent;
+
+import com.android.projet.projetandroid.markerAugReality.Marker;
+import com.android.projet.projetandroid.markerAugReality.MarkerActivity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -53,6 +57,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
 			if (playBounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.clickSound);
+                game.actionResolver.launchActivity(MarkerActivity.class);
 				game.setScreen(new GameScreen(game));
 				return;
 			}
