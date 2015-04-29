@@ -41,13 +41,13 @@ public class MainMenuScreen extends ScreenAdapter {
 	public MainMenuScreen (SuperJumper game) {
 		this.game = game;
 
-		guiCam = new OrthographicCamera(320, 480);
-		guiCam.position.set(320 / 2, 480 / 2, 0);
+		guiCam = new OrthographicCamera(480, 320);
+		guiCam.position.set(480 / 2, 320 / 2, 0);
 		soundBounds = new Rectangle(0, 0, 64, 64);
-		playBounds = new Rectangle(160 - 150, 200 + 36 + 18, 300, 36);
-		highscoresBounds = new Rectangle(160 - 150, 200 + 18, 300, 36);
-		mapBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
-        saveBounds = new Rectangle(160 - 150, 200 - 18 - 36, 300, 36);
+		playBounds = new Rectangle(240 - 300 / 2, 320 - 120 - 36, 300, 36);
+		highscoresBounds = new Rectangle(240 - 300 / 2, 320 - 120 - 36 * 2, 300, 36);
+		mapBounds = new Rectangle(240 - 300 / 2, 320 - 120 - 36 * 3, 300, 36);
+        saveBounds = new Rectangle(240 - 300 / 2, 320 - 120 - 36 * 4, 300, 36);
 		touchPoint = new Vector3();
 	}
 
@@ -100,13 +100,13 @@ public class MainMenuScreen extends ScreenAdapter {
 
 		game.batcher.disableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
+		game.batcher.draw(Assets.backgroundRegion, 0, 0, 480, 320);
 		game.batcher.end();
 
 		game.batcher.enableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.logo, 160 - 274 / 2, 480 - 10 - 142, 274, 142);
-		game.batcher.draw(Assets.mainMenu, 10, 200 - 110 / 2, 300, 145);
+		game.batcher.draw(Assets.logo, 240 - 450 / 2, 320 - 30 - 60, 450, 60);
+		game.batcher.draw(Assets.mainMenu, 240 - 300 / 2, 320 - 60 - 60 - 145, 300, 145);
 		game.batcher.draw(Settings.soundEnabled ? Assets.soundOn : Assets.soundOff, 0, 0, 64, 64);
 
 		game.batcher.end();
@@ -116,6 +116,9 @@ public class MainMenuScreen extends ScreenAdapter {
         shapeRenderer.setProjectionMatrix(guiCam.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(playBounds.x, playBounds.y, playBounds.width, playBounds.height);
+        shapeRenderer.rect(highscoresBounds.x, highscoresBounds.y, highscoresBounds.width, highscoresBounds.height);
+        shapeRenderer.rect(mapBounds.x, mapBounds.y, mapBounds.width, mapBounds.height);
         shapeRenderer.rect(saveBounds.x, saveBounds.y, saveBounds.width, saveBounds.height);
         shapeRenderer.end();*/
 
