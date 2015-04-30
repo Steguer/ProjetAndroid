@@ -22,7 +22,7 @@ public class CustomRenderer implements OpenGLRenderer {
 	
 
 	public final void draw(GL10 gl) {
-	}
+    }
 
 
 	/**

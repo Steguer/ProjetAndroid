@@ -16,15 +16,12 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
-import android.content.Intent;
-
-import com.android.projet.projetandroid.markerAugReality.Marker;
+import com.android.projet.projetandroid.map.MapsActivity;
 import com.android.projet.projetandroid.markerAugReality.MarkerActivity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -68,7 +65,7 @@ public class MainMenuScreen extends ScreenAdapter {
 			}
 			if (mapBounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.clickSound);
-
+                game.actionResolver.launchActivity(MapsActivity.class);
                 // Add here the behavior fot a click on map
 
 				return;
