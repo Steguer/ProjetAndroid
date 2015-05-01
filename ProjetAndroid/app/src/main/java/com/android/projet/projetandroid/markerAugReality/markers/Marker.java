@@ -1,4 +1,4 @@
-package com.android.projet.projetandroid.markerAugReality;
+package com.android.projet.projetandroid.markerAugReality.markers;
 
 import android.graphics.Point;
 

@@ -1,4 +1,4 @@
-package com.android.projet.projetandroid.markerAugReality;
+package com.android.projet.projetandroid.markerAugReality.markers;
 
 /**
  * Created by Adrien on 22/04/2015.

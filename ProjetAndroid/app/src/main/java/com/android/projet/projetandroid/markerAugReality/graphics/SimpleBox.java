@@ -1,4 +1,6 @@
-package com.android.projet.projetandroid.markerAugReality;
+package com.android.projet.projetandroid.markerAugReality.graphics;
+
+import com.android.projet.projetandroid.markerAugReality.graphics.OpenGLUtils;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;

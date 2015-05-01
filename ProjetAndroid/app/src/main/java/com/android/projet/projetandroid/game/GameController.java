@@ -2,7 +2,7 @@ package com.android.projet.projetandroid.game;
 
 import android.graphics.Bitmap;
 
-import com.android.projet.projetandroid.markerAugReality.Marker;
+import com.android.projet.projetandroid.markerAugReality.markers.Marker;
 
 import java.util.List;
 

@@ -1,20 +1,22 @@
 package com.android.projet.projetandroid.markerAugReality;
 
-import android.graphics.Point;
+import com.android.projet.projetandroid.markerAugReality.graphics.SimpleBox;
 
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-//import edu.dhbw.andar.pub.SimpleBox;
+import edu.dhbw.andar.ARObject;
 import edu.dhbw.andar.util.GraphicsUtil;
 
-public class CustomObject3 extends ICustomObject {
+//import edu.dhbw.andar.pub.SimpleBox;
+
+public class CustomObject3 extends ARObject {
 
 	
 	public CustomObject3(String name, String patternName,
-			double markerWidth, double[] markerCenter, MarkerActivity markerActivity) {
-		super(name, patternName, markerWidth, markerCenter, markerActivity);
+			double markerWidth, double[] markerCenter) {
+		super(name, patternName, markerWidth, markerCenter);
 		float   mat_ambientf[]     = {0f, 0f, 1.0f, 1.0f};
 		float   mat_flashf[]       = {0f, 0f, 1.0f, 1.0f};
 		float   mat_diffusef[]       = {0f, 0f, 1.0f, 1.0f};
@@ -27,8 +29,8 @@ public class CustomObject3 extends ICustomObject {
 		
 	}
 	public CustomObject3(String name, String patternName,
-			double markerWidth, double[] markerCenter, float[] customColor, MarkerActivity markerActivity) {
-		super(name, patternName, markerWidth, markerCenter, markerActivity);
+			double markerWidth, double[] markerCenter, float[] customColor) {
+		super(name, patternName, markerWidth, markerCenter);
 		float   mat_flash_shinyf[] = {50.0f};
 
 		mat_ambient = GraphicsUtil.makeFloatBuffer(customColor);
@@ -62,12 +64,7 @@ public class CustomObject3 extends ICustomObject {
 
 	    //draw cube
 	    gl.glColor4f(0f, 0f, 1.0f, 1.0f);
-	    gl.glTranslatef( 0.0f, 0.0f, 12.5f );
-
-        Projector projector = new Projector();
-        projector.setViewport(gl);
-        Point xy = projector.getScreenCoords(getTransMatrix(), gl);
-        this.detected(xy);
+	    gl.glTranslatef(0.0f, 0.0f, 12.5f);
 
 	    //draw the box
 	    box.draw(gl, 80, 80, 10);

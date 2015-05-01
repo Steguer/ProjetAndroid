@@ -18,8 +18,8 @@ package com.android.projet.projetandroid.game.superjumper;
 
 import android.graphics.Point;
 
-import com.android.projet.projetandroid.markerAugReality.Marker;
-import com.android.projet.projetandroid.markerAugReality.MarkerType;
+import com.android.projet.projetandroid.markerAugReality.markers.Marker;
+import com.android.projet.projetandroid.markerAugReality.markers.MarkerType;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
