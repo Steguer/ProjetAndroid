@@ -19,6 +19,9 @@ import edu.dhbw.andar.util.GraphicsUtil;
 public abstract class AbstractMarker extends ARObject {
     private MarkerActivity markerActivity;
     private boolean hasDetected;
+    private long lastDrew;
+    public static final long TIME_UNDETECTED = 450;
+    private Point position;
 
     public MarkerType getType() {
         return type;
@@ -42,7 +45,6 @@ public abstract class AbstractMarker extends ARObject {
         this.markerActivity = markerActivity;
         this.hasDetected = false;
         this.type = type;
-        System.out.println("c1 " + type);
     }
 
     public AbstractMarker(String name, String patternName,
@@ -58,7 +60,6 @@ public abstract class AbstractMarker extends ARObject {
         this.markerActivity = markerActivity;
         this.hasDetected = false;
         this.type = type;
-        System.out.println("c2 " + type);
     }
 
     private SimpleBox box = new SimpleBox();
@@ -82,23 +83,37 @@ public abstract class AbstractMarker extends ARObject {
         Projector projector = new Projector();
         projector.setViewport(gl);
         Point xy = projector.getScreenCoords(getTransMatrix(), gl);
+        lastDrew = System.currentTimeMillis();
         detected(xy);
 
         box.draw(gl, 60, 60, 10);
-        System.out.println(type);
     }
 
     @Override
     public void init(GL10 gl) {
-        System.out.println("init");
     }
 
     protected void detected(Point xy){
-        if(!this.hasDetected) {
-            markerActivity.detected(this, xy);
-            this.hasDetected = true;
+        position = xy;
+        if(!hasDetected) {
+            markerActivity.detected(this, true);
+            hasDetected = true;
         }
     }
 
+    public Point getPosition() {
+        return position;
+    }
 
+    public void setHasDetected(boolean hasDetected) {
+        this.hasDetected = hasDetected;
+    }
+
+    public long getLastDrew() {
+        return lastDrew;
+    }
+
+    public boolean isHasDetected() {
+        return hasDetected;
+    }
 }

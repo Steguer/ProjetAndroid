@@ -3,42 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:indeterminate="true"
-        android:layout_marginTop="15dp"
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:id="@+id/imageViewLogo"
+        android:src="@drawable/logo"
+        android:scaleType="fitXY"
+        android:layout_marginTop="25dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp" />
+        android:layout_marginStart="30dp"
+        android:alpha="0.1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Waiting for markers"
+        android:text = "@string/marker_waiting"
         android:id="@+id/textViewWaitingMarker"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
-        android:layout_toRightOf="@+id/progressBar" />
+        android:layout_toRightOf="@+id/imageViewLogo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Required markers :"
+        android:text="@string/marker_required"
         android:id="@+id/textViewRequired"
-        android:layout_below="@+id/progressBar"
-        android:layout_alignLeft="@+id/progressBar"
-        android:layout_alignStart="@+id/progressBar"
+        android:layout_below="@+id/imageViewLogo"
+        android:layout_alignLeft="@+id/imageViewLogo"
+        android:layout_alignStart="@+id/imageViewLogo"
         android:layout_marginTop="10dp"/>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/textViewRequired"
-        android:layout_alignLeft="@+id/progressBar"
-        android:layout_alignStart="@+id/progressBar"
+        android:layout_alignLeft="@+id/imageViewLogo"
+        android:layout_alignStart="@+id/imageViewLogo"
         android:layout_marginTop="5dp"
         android:id="@+id/linearLayout">
 
@@ -62,8 +64,24 @@
             android:id="@+id/imageView3"
             android:src="@drawable/platform"
             android:scaleType="fitXY" />
+
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LAUNCH"
+        android:id="@+id/launchButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="35dp"
+        android:drawableLeft="@drawable/castle"
+        android:drawablePadding="5sp"
+        android:background="#00ffffff"
+        android:padding="10sp"/>
 
 
 </RelativeLayout>
