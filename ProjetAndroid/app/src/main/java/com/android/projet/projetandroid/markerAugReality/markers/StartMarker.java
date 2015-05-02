@@ -7,11 +7,11 @@ import com.android.projet.projetandroid.markerAugReality.MarkerActivity;
  */
 public class StartMarker extends AbstractMarker {
     public StartMarker(String name, String patternName, double markerWidth, double[] markerCenter, MarkerActivity markerActivity) {
-        super(name, patternName, markerWidth, markerCenter, markerActivity, MarkerType.COIN);
+        super(name, patternName, markerWidth, markerCenter, markerActivity, MarkerType.START);
     }
 
     public StartMarker(String name, String patternName, double markerWidth, double[] markerCenter, float[] customColor, MarkerActivity markerActivity) {
-        super(name, patternName, markerWidth, markerCenter, customColor, markerActivity, MarkerType.COIN);
+        super(name, patternName, markerWidth, markerCenter, customColor, markerActivity, MarkerType.START);
     }
 
     public StartMarker(float[] customColor, MarkerActivity markerActivity) {

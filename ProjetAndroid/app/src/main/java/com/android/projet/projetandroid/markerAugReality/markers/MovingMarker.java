@@ -7,11 +7,11 @@ import com.android.projet.projetandroid.markerAugReality.MarkerActivity;
  */
 public class MovingMarker extends AbstractMarker {
     public MovingMarker(String name, String patternName, double markerWidth, double[] markerCenter, MarkerActivity markerActivity) {
-        super(name, patternName, markerWidth, markerCenter, markerActivity, MarkerType.COIN);
+        super(name, patternName, markerWidth, markerCenter, markerActivity, MarkerType.MOVING);
     }
 
     public MovingMarker(String name, String patternName, double markerWidth, double[] markerCenter, float[] customColor, MarkerActivity markerActivity) {
-        super(name, patternName, markerWidth, markerCenter, customColor, markerActivity, MarkerType.COIN);
+        super(name, patternName, markerWidth, markerCenter, customColor, markerActivity, MarkerType.MOVING);
     }
 
     public MovingMarker(float[] customColor, MarkerActivity markerActivity) {

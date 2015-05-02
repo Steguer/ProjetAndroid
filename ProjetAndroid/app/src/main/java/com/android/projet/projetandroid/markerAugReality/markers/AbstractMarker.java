@@ -19,6 +19,11 @@ import edu.dhbw.andar.util.GraphicsUtil;
 public abstract class AbstractMarker extends ARObject {
     private MarkerActivity markerActivity;
     private boolean hasDetected;
+
+    public MarkerType getType() {
+        return type;
+    }
+
     private MarkerType type;
 
     public AbstractMarker(String name, String patternName,
@@ -37,7 +42,9 @@ public abstract class AbstractMarker extends ARObject {
         this.markerActivity = markerActivity;
         this.hasDetected = false;
         this.type = type;
+        System.out.println("c1 " + type);
     }
+
     public AbstractMarker(String name, String patternName,
                          double markerWidth, double[] markerCenter, float[] customColor, MarkerActivity markerActivity, MarkerType type) {
         super(name, patternName, markerWidth, markerCenter);
@@ -51,6 +58,7 @@ public abstract class AbstractMarker extends ARObject {
         this.markerActivity = markerActivity;
         this.hasDetected = false;
         this.type = type;
+        System.out.println("c2 " + type);
     }
 
     private SimpleBox box = new SimpleBox();
@@ -77,17 +85,20 @@ public abstract class AbstractMarker extends ARObject {
         detected(xy);
 
         box.draw(gl, 60, 60, 10);
+        System.out.println(type);
     }
 
     @Override
     public void init(GL10 gl) {
-
+        System.out.println("init");
     }
 
     protected void detected(Point xy){
-        //if(!this.hasDetected) {
-        markerActivity.detected(this, xy);
-        this.hasDetected = true;
-        //}
+        if(!this.hasDetected) {
+            markerActivity.detected(this, xy);
+            this.hasDetected = true;
+        }
     }
+
+
 }
