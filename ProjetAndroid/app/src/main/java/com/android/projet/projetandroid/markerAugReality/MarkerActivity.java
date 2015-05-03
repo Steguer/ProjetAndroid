@@ -1,7 +1,9 @@
 package com.android.projet.projetandroid.markerAugReality;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +14,11 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.projet.projetandroid.R;
+import com.android.projet.projetandroid.game.GameController;
 import com.android.projet.projetandroid.markerAugReality.markers.AbstractMarker;
 import com.android.projet.projetandroid.markerAugReality.markers.CoinMarker;
 import com.android.projet.projetandroid.markerAugReality.markers.EndMarker;
@@ -30,7 +34,9 @@ import com.android.projet.projetandroid.markerAugReality.markers.StyleMarker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -86,7 +92,7 @@ public class MarkerActivity extends AndARActivity {
             artoolkit.registerARObject(someObject);
             markers.put(MarkerType.STYLE, someObject);
 
-        } catch (AndARException ex){
+        } catch (AndARException ex) {
             System.out.println("");
         }
         createInfoLayer();
@@ -101,9 +107,9 @@ public class MarkerActivity extends AndARActivity {
     private View infoLayer;
     private FrameLayout frameLayout;
 
-    private void createInfoLayer(){
+    private void createInfoLayer() {
         canBeLaunched = false;
-        frameLayout = (FrameLayout)this.findViewById(android.R.id.content);
+        frameLayout = (FrameLayout) this.findViewById(android.R.id.content);
         LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         infoLayer = vi.inflate(R.layout.marker_info, null);
         requiredTypes = new ArrayList<>();
@@ -123,6 +129,12 @@ public class MarkerActivity extends AndARActivity {
                 TextView tv2 = (TextView) findViewById(R.id.textViewRequired);
                 tv2.setTypeface(type);
                 tv2.setTextSize(16);
+                TextView tv3 = (TextView) findViewById(R.id.textViewTakingPicture);
+                tv3.setTypeface(type);
+                tv3.setTextSize(16);
+                tv3.setVisibility(View.GONE);
+                ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+                pb.setVisibility(View.GONE);
                 images.add((ImageView) findViewById(R.id.imageView));
                 images.add((ImageView) findViewById(R.id.imageView2));
                 images.add((ImageView) findViewById(R.id.imageView3));
@@ -143,6 +155,7 @@ public class MarkerActivity extends AndARActivity {
         });
         sound = new SoundPoolPlayer(this);
         lastSoundPlayed = System.currentTimeMillis();
+        takingPicture = false;
         new Timer().scheduleAtFixedRate(new CheckUndetectionTask(), 0, 800);
     }
 
@@ -150,14 +163,14 @@ public class MarkerActivity extends AndARActivity {
     private List<MarkerType> requiredTypes;
     private List<ImageView> images;
 
-    private boolean checkLaunched(){
+    private boolean checkLaunched() {
         List<AbstractMarker> whatWeWant = new ArrayList<>();
         ImageView imageView = null;
         int i = 0;
-        for (MarkerType type : requiredTypes){
-            whatWeWant.add((AbstractMarker)markers.get(type));
+        for (MarkerType type : requiredTypes) {
+            whatWeWant.add((AbstractMarker) markers.get(type));
             imageView = images.get(i);
-            if(detectedMarkers.contains((AbstractMarker)markers.get(type))){
+            if (detectedMarkers.contains((AbstractMarker) markers.get(type))) {
                 imageView.setAlpha(0.1f);
             } else {
                 imageView.setAlpha(1.0f);
@@ -167,8 +180,11 @@ public class MarkerActivity extends AndARActivity {
         return detectedMarkers.containsAll(whatWeWant);
     }
 
-    public void detected(AbstractMarker marker, boolean detected){
-        if(detected) {
+    public void detected(AbstractMarker marker, boolean detected) {
+        if (takingPicture) {
+            return;
+        }
+        if (detected) {
             detectedMarkers.add(marker);
         } else {
             detectedMarkers.remove(marker);
@@ -182,14 +198,14 @@ public class MarkerActivity extends AndARActivity {
                 ImageView iv = (ImageView) findViewById(R.id.imageViewLogo);
                 Button button = (Button) findViewById(R.id.launchButton);
 
-                if(detectedMarkers.size() > 0) {
+                if (detectedMarkers.size() > 0) {
                     tv.setText((canBeLaunched ? "Ready to launch with " + detectedMarkers.size() + " markers" : "Detected markers : " + detectedMarkers.size()));
                     iv.setAlpha(canBeLaunched ? 1.0f : 0.5f);
-                    if(canBeLaunched){
+                    if (canBeLaunched) {
                         button.setVisibility(View.VISIBLE);
 
                         long t = System.currentTimeMillis();
-                        if(t - lastSoundPlayed >= 2000) {
+                        if (t - lastSoundPlayed >= 2000) {
                             sound.playShortResource(R.raw.coin);
                             lastSoundPlayed = t;
                             button.startAnimation(animSet);
@@ -212,34 +228,118 @@ public class MarkerActivity extends AndARActivity {
         public void run() {
             long t = System.currentTimeMillis();
             List<AbstractMarker> toRemove = new ArrayList<>();
-            for(AbstractMarker marker : detectedMarkers){
-                if(marker.isHasDetected() && t - marker.getLastDrew() >= AbstractMarker.TIME_UNDETECTED){
+            for (AbstractMarker marker : detectedMarkers) {
+                if (marker.isHasDetected() && t - marker.getLastDrew() >= AbstractMarker.TIME_UNDETECTED) {
                     toRemove.add(marker);
                 }
             }
-            for(AbstractMarker marker : toRemove){
+            for (AbstractMarker marker : toRemove) {
                 marker.setHasDetected(false);
                 detected(marker, false);
             }
         }
     }
 
+    private List<Marker> temporaryMarkers;
+
     View.OnClickListener launchButtonHandler = new View.OnClickListener() {
         public void onClick(View v) {
-            onBackPressed();
+            if (checkLaunched() && !takingPicture) {
+                temporaryMarkers = new ArrayList<>();
+                for (AbstractMarker marker : detectedMarkers) {
+                    temporaryMarkers.add(new Marker(marker.getPosition(), marker.getType()));
+                }
+                for (AbstractMarker marker : detectedMarkers) {
+                    marker.setStopDraw(true);
+                }
+                takingPicture = true;
+                new TakeAsyncScreenshot().execute();
+            }
         }
     };
 
+    private boolean takingPicture;
+
     @Override
     public void onBackPressed() {
-        if(checkLaunched()) {
-            List<Marker> markers = new ArrayList<>();
-            for (AbstractMarker marker : detectedMarkers) {
-                markers.add(new Marker(marker.getPosition(), marker.getType()));
-            }
-            sound.playShortResource(R.raw.highjump);
-            //super.onBackPressed();
+        Iterator entries = markers.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry thisEntry = (Map.Entry) entries.next();
+            ((AbstractMarker) thisEntry.getValue()).setStopDraw(false);
         }
+        sound.playShortResource(R.raw.highjump);
+        GameController.getIsntance().createGame(temporaryMarkers, bm);
+        Animation scale = new ScaleAnimation(1.0f, 10.0f, 1.0f, 10.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scale.setDuration(1000);
+        final AnimationSet animSet = new AnimationSet(true);
+        animSet.setFillEnabled(true);
+        animSet.addAnimation(scale);
+        animSet.setRepeatCount(1);
+
+        animSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                customOnBackKeyPressed();
+            }
+        });
+
+        Button button = (Button) findViewById(R.id.launchButton);
+        button.startAnimation(animSet);
+
+    }
+
+    private Bitmap bm;
+
+    class TakeAsyncScreenshot extends AsyncTask<Void, Void, Void> {
+
+        private String errorMsg = null;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView tv = (TextView) findViewById(R.id.textViewTakingPicture);
+                    tv.setVisibility(View.VISIBLE);
+                    ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+                    pb.setVisibility(View.VISIBLE);
+                }
+            });
+
+            bm = takeScreenshot();
+
+            runOnUiThread(new Runnable() {
+                              @Override
+                              public void run() {
+                                  TextView tv = (TextView) findViewById(R.id.textViewTakingPicture);
+                                  tv.setVisibility(View.GONE);
+                                  ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar);
+                                  pb.setVisibility(View.GONE);
+                                  onBackPressed();
+                              }
+                          }
+
+            );
+            return null;
+        }
+
+        protected void onPostExecute(Void result) {
+        }
+
+        ;
+
+    }
+
+    private void customOnBackKeyPressed() {
+        super.onBackPressed();
     }
 
     @Override

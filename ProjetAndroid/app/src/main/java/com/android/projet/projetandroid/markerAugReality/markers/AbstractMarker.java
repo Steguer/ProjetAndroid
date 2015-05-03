@@ -22,6 +22,7 @@ public abstract class AbstractMarker extends ARObject {
     private long lastDrew;
     public static final long TIME_UNDETECTED = 450;
     private Point position;
+    private boolean stopDraw;
 
     public MarkerType getType() {
         return type;
@@ -45,6 +46,7 @@ public abstract class AbstractMarker extends ARObject {
         this.markerActivity = markerActivity;
         this.hasDetected = false;
         this.type = type;
+        this.stopDraw = false;
     }
 
     public AbstractMarker(String name, String patternName,
@@ -60,6 +62,7 @@ public abstract class AbstractMarker extends ARObject {
         this.markerActivity = markerActivity;
         this.hasDetected = false;
         this.type = type;
+        this.stopDraw = false;
     }
 
     private SimpleBox box = new SimpleBox();
@@ -68,8 +71,16 @@ public abstract class AbstractMarker extends ARObject {
     private FloatBuffer mat_flash_shiny;
     private FloatBuffer mat_diffuse;
 
+    public void setStopDraw(boolean stopDraw) {
+        this.stopDraw = stopDraw;
+    }
+
     @Override
     public final void draw(GL10 gl) {
+        if(stopDraw){
+            return;
+
+        }
         super.draw(gl);
 
         gl.glMaterialfv(GL10.GL_FRONT_AND_BACK, GL10.GL_SPECULAR,mat_flash);
