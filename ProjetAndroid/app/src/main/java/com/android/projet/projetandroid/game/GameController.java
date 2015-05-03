@@ -2,6 +2,7 @@ package com.android.projet.projetandroid.game;
 
 import android.graphics.Bitmap;
 
+import com.android.projet.projetandroid.game.superjumper.MainMenuScreen;
 import com.android.projet.projetandroid.markerAugReality.markers.Marker;
 
 import java.util.List;
@@ -14,6 +15,11 @@ public class GameController {
 
     private  List<Marker> markersList;
     private  Bitmap background;
+    private MainMenuScreen currentMainMenuScreen;
+
+    public void setCurrentMainMenuScreen(MainMenuScreen currentMainMenuScreen) {
+        this.currentMainMenuScreen = currentMainMenuScreen;
+    }
 
     private GameController() {
     }
@@ -34,7 +40,9 @@ public class GameController {
     public boolean createGame(List<Marker> markers, Bitmap backgroundImage) {
         this.markersList = markers;
         this.background = backgroundImage;
-
+        if(this.currentMainMenuScreen != null) {
+            this.currentMainMenuScreen.fromGameController();
+        }
         return true;
     }
 

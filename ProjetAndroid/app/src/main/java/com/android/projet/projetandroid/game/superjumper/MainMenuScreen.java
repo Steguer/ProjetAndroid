@@ -16,6 +16,7 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
+import com.android.projet.projetandroid.game.GameController;
 import com.android.projet.projetandroid.map.MapsActivity;
 import com.android.projet.projetandroid.markerAugReality.MarkerActivity;
 import com.badlogic.gdx.Gdx;
@@ -46,6 +47,7 @@ public class MainMenuScreen extends ScreenAdapter {
 		mapBounds = new Rectangle(240 - 300 / 2, 320 - 120 - 36 * 3, 300, 36);
         saveBounds = new Rectangle(240 - 300 / 2, 320 - 120 - 36 * 4, 300, 36);
 		touchPoint = new Vector3();
+		GameController.getIsntance().setCurrentMainMenuScreen(this);
 	}
 
 	public void update () {
@@ -55,7 +57,7 @@ public class MainMenuScreen extends ScreenAdapter {
 			if (playBounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.clickSound);
                 game.actionResolver.launchActivity(MarkerActivity.class);
-				game.setScreen(new GameScreen(game));
+
 				return;
 			}
 			if (highscoresBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -130,5 +132,9 @@ public class MainMenuScreen extends ScreenAdapter {
 	@Override
 	public void pause () {
 		Settings.save();
+	}
+
+	public void fromGameController(){
+		game.setScreen(new GameScreen(game));
 	}
 }
