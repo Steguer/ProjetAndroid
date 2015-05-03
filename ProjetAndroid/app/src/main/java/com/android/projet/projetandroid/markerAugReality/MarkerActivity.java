@@ -262,6 +262,9 @@ public class MarkerActivity extends AndARActivity {
 
     @Override
     public void onBackPressed() {
+        if(!checkLaunched()){
+            return;
+        }
         Iterator entries = markers.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry thisEntry = (Map.Entry) entries.next();
