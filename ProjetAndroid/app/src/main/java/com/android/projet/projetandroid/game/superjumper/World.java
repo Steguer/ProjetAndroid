@@ -39,7 +39,7 @@ public class World {
 	}
 
 	public static final float WORLD_WIDTH = 10;
-	public static final float WORLD_HEIGHT = 10;
+	public static final float WORLD_HEIGHT = 6;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_NEXT_LEVEL = 1;
 	public static final int WORLD_STATE_GAME_OVER = 2;
@@ -94,11 +94,11 @@ public class World {
 		for(int i=0; i<markersPosition.size(); ++i) {
             Platform  platform;
             if(markersPosition.get(i).getType() == MarkerType.MOVING) {
-                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x  / 192, markersPosition.get(i).getPosition().y/108);
+                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x  / 192, WORLD_HEIGHT - markersPosition.get(i).getPosition().y / 180);
                 platforms.add(platform);
             }
             else{
-                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x/192, markersPosition.get(i).getPosition().y/108);
+                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x/192, WORLD_HEIGHT - markersPosition.get(i).getPosition().y / 180);
                 platforms.add(platform);
                 if(markersPosition.get(i).getType() == MarkerType.START) {
                     this.startPosition = markersPosition.get(i).getPosition();
@@ -109,7 +109,7 @@ public class World {
                     springs.add(spring);
                 }
                 if(markersPosition.get(i).getType() == MarkerType.END) {
-                    this.castle = new Castle(markersPosition.get(i).getPosition().x/192, markersPosition.get(i).getPosition().y/108 + 1);
+                    this.castle = new Castle(markersPosition.get(i).getPosition().x/192, WORLD_HEIGHT - markersPosition.get(i).getPosition().y / 180 + 1);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
                     Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y
