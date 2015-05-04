@@ -111,10 +111,10 @@ public class MarkerActivity extends AndARActivity {
 
     public class MarkerGridView extends View
     {
-        private int GRID_WIDTH = 10;
-        private int GRID_HEIGHT = 10;
+        private int GRID_WIDTH = 8;
+        private int GRID_HEIGHT = 8;
         private int GRID_SIZE = 50;
-        private int MARGIN = 20;
+        private int MARGIN = 70;
 
         public void toggleStopDrawing() {
             stopDrawing = !stopDrawing;
@@ -146,8 +146,8 @@ public class MarkerActivity extends AndARActivity {
             paint.setColor(Color.argb(stopDrawing ? 0 : 125,255,255,255));
             for(int i = 0; i < GRID_WIDTH; i++) {
                 for(int j = 0; j < GRID_HEIGHT; j++) {
-                    left = i * (GRID_SIZE + MARGIN);
-                    top = j * (GRID_SIZE + MARGIN);
+                    left = i * (GRID_SIZE + MARGIN)+ 30;
+                    top = j * (GRID_SIZE + MARGIN) + 20;
                     right = left + GRID_SIZE;
                     bottom = top + GRID_SIZE;
                     canvas.drawRect(new Rect(left, top, right, bottom), paint);
