@@ -100,5 +100,16 @@
         android:layout_below="@+id/progressBar"
         android:layout_centerHorizontal="true" />
 
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageButtonMarkerGrid"
+        android:layout_alignTop="@+id/textViewWaitingMarker"
+        android:layout_alignRight="@+id/launchButton"
+        android:layout_alignEnd="@+id/launchButton"
+        android:src="@drawable/grid_view_block"
+        android:scaleType="fitXY"
+        android:background="#00ffffff"/>
+
 
 </RelativeLayout>

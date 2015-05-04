@@ -2,6 +2,10 @@ package com.android.projet.projetandroid.markerAugReality;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +17,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -104,7 +109,55 @@ public class MarkerActivity extends AndARActivity {
         finish();
     }
 
+    public class MarkerGridView extends View
+    {
+        private int GRID_WIDTH = 8;
+        private int GRID_HEIGHT = 8;
+        private int GRID_SIZE = 50;
+        private int MARGIN = 70;
+
+        public void toggleStopDrawing() {
+            stopDrawing = !stopDrawing;
+            invalidate();
+        }
+
+        public boolean isStopDrawing() {
+            return stopDrawing;
+        }
+
+        private boolean stopDrawing = false;
+
+        public MarkerGridView(Context context)
+        {
+            super(context);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas)
+        {
+            super.onDraw(canvas);
+            GRID_SIZE = (getWidth()/GRID_WIDTH)-MARGIN;
+            int left = 0;
+            int top = 0;
+            int right = 0;
+            int bottom = 0;
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.argb(stopDrawing ? 0 : 125,255,255,255));
+            for(int i = 0; i < GRID_WIDTH; i++) {
+                for(int j = 0; j < GRID_HEIGHT; j++) {
+                    left = i * (GRID_SIZE + MARGIN)+ 30;
+                    top = j * (GRID_SIZE + MARGIN) + 20;
+                    right = left + GRID_SIZE;
+                    bottom = top + GRID_SIZE;
+                    canvas.drawRect(new Rect(left, top, right, bottom), paint);
+                }
+            }
+        }
+    }
+
     private View infoLayer;
+    private MarkerGridView markerGridView;
     private FrameLayout frameLayout;
 
     private void createInfoLayer() {
@@ -117,10 +170,12 @@ public class MarkerActivity extends AndARActivity {
         requiredTypes.add(MarkerType.START);
         requiredTypes.add(MarkerType.STANDARD);
         images = new ArrayList<>();
+        markerGridView = new MarkerGridView(getApplicationContext());
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                frameLayout.addView(markerGridView);
                 frameLayout.addView(infoLayer);
                 Typeface type = Typeface.createFromAsset(getAssets(), "RetrovilleNC.ttf");
                 TextView tv = (TextView) findViewById(R.id.textViewWaitingMarker);
@@ -150,6 +205,8 @@ public class MarkerActivity extends AndARActivity {
                 animSet.addAnimation(scale);
                 animSet.setRepeatMode(Animation.REVERSE);
                 animSet.setRepeatCount(-1);
+                ImageButton button2 = (ImageButton) findViewById(R.id.imageButtonMarkerGrid);
+                button2.setOnClickListener(markerGridButtonHandler);
 
             }
         });
@@ -241,6 +298,12 @@ public class MarkerActivity extends AndARActivity {
     }
 
     private List<Marker> temporaryMarkers;
+
+    View.OnClickListener markerGridButtonHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            markerGridView.toggleStopDrawing();
+        }
+    };
 
     View.OnClickListener launchButtonHandler = new View.OnClickListener() {
         public void onClick(View v) {
