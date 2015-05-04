@@ -69,7 +69,7 @@ public class HighscoresScreen extends ScreenAdapter {
 		game.batcher.setProjectionMatrix(guiCam.combined);
 		game.batcher.disableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundRegion, 0, 0, 480, 320);
+		game.batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
 		game.batcher.end();
 
 		game.batcher.enableBlending();
