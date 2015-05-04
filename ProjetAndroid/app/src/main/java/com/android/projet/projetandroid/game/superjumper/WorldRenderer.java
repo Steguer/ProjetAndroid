@@ -108,7 +108,7 @@ public class WorldRenderer {
 				keyFrame = Assets.brakingPlatform.getKeyFrame(platform.stateTime, Animation.ANIMATION_NONLOOPING);
 			}
 
-			batch.draw(keyFrame, platform.position.x - 1, platform.position.y - 0.25f, 2, 0.5f);
+			batch.draw(keyFrame, platform.position.x - 1, platform.position.y - 0.25f, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
 		}
 	}
 
@@ -142,7 +142,7 @@ public class WorldRenderer {
 
 	private void renderCastle () {
 		Castle castle = world.castle;
-		batch.draw(Assets.castle, castle.position.x - 1, castle.position.y - 1, 2, 2);
+		batch.draw(Assets.castle, castle.position.x - 1, castle.position.y - 1, Castle.CASTLE_WIDTH, Castle.CASTLE_HEIGHT);
 	}
 
     private void loadBackground() {
