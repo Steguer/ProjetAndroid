@@ -18,6 +18,7 @@ package com.android.projet.projetandroid.game.superjumper;
 
 import android.graphics.Point;
 
+import com.android.projet.projetandroid.game.GameController;
 import com.android.projet.projetandroid.markerAugReality.markers.Marker;
 import com.android.projet.projetandroid.markerAugReality.markers.MarkerType;
 import com.badlogic.gdx.math.Vector2;
@@ -38,7 +39,7 @@ public class World {
 	}
 
 	public static final float WORLD_WIDTH = 10;
-	public static final float WORLD_HEIGHT = 15 * 20;
+	public static final float WORLD_HEIGHT = 10;
 	public static final int WORLD_STATE_RUNNING = 0;
 	public static final int WORLD_STATE_NEXT_LEVEL = 1;
 	public static final int WORLD_STATE_GAME_OVER = 2;
@@ -65,21 +66,21 @@ public class World {
 		this.springs = new ArrayList<Spring>();
 		this.squirrels = new ArrayList<Squirrel>();
 		this.coins = new ArrayList<Coin>();
-        this.markersPosition = new ArrayList<Marker>();
 		this.listener = listener;
+        this.markersPosition = new ArrayList<Marker>(GameController.getIsntance().getMarkersList());
 		rand = new Random();
 
         // Test with random values
-        Marker marker = new Marker(new Point(0, 0) , 10, MarkerType.START);
+        /*Marker marker = new Marker(new Point(0, 0) , 10, MarkerType.START);
         markersPosition.add(marker);
         marker = new Marker(new Point(5, 0) , 10, MarkerType.ENEMY);
         markersPosition.add(marker);
         marker = new Marker(new Point(10, 0) , 10, MarkerType.END);
-        markersPosition.add(marker);
+        markersPosition.add(marker);*/
 
 		generateLevel();
 
-        this.bob = new Bob(startPosition.x, startPosition.y + Platform.PLATFORM_HEIGHT);
+        this.bob = new Bob(startPosition.x/192, startPosition.y/108 + Platform.PLATFORM_HEIGHT);
 
 		this.heightSoFar = 0;
 		this.score = 0;
@@ -93,11 +94,11 @@ public class World {
 		for(int i=0; i<markersPosition.size(); ++i) {
             Platform  platform;
             if(markersPosition.get(i).getType() == MarkerType.MOVING) {
-                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x  / 192, markersPosition.get(i).getPosition().y/108);
                 platforms.add(platform);
             }
             else{
-                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x/192, markersPosition.get(i).getPosition().y/108);
                 platforms.add(platform);
                 if(markersPosition.get(i).getType() == MarkerType.START) {
                     this.startPosition = markersPosition.get(i).getPosition();
@@ -108,7 +109,7 @@ public class World {
                     springs.add(spring);
                 }
                 if(markersPosition.get(i).getType() == MarkerType.END) {
-                    this.castle = new Castle(markersPosition.get(i).getPosition().x, markersPosition.get(i).getPosition().y);
+                    this.castle = new Castle(markersPosition.get(i).getPosition().x/192, markersPosition.get(i).getPosition().y/108 + 1);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
                     Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y

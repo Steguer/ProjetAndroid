@@ -57,7 +57,6 @@ public class MainMenuScreen extends ScreenAdapter {
 			if (playBounds.contains(touchPoint.x, touchPoint.y)) {
 				Assets.playSound(Assets.clickSound);
                 game.actionResolver.launchActivity(MarkerActivity.class);
-
 				return;
 			}
 			if (highscoresBounds.contains(touchPoint.x, touchPoint.y)) {
@@ -135,6 +134,6 @@ public class MainMenuScreen extends ScreenAdapter {
 	}
 
 	public void fromGameController(){
-		game.setScreen(new GameScreen(game));
+        game.setScreen(new GameScreen(game));
 	}
 }

@@ -16,7 +16,12 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
+import android.graphics.Bitmap;
+
+import com.android.projet.projetandroid.game.GameController;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -27,11 +32,17 @@ public class WorldRenderer {
 	OrthographicCamera cam;
 	SpriteBatch batch;
 
+    private Bitmap image;
+    private Texture texture;
+    private Pixmap pixmap;
+    private boolean enaLoadBackground;
+
 	public WorldRenderer (SpriteBatch batch, World world) {
 		this.world = world;
 		this.cam = new OrthographicCamera(FRUSTUM_WIDTH, FRUSTUM_HEIGHT);
 		this.cam.position.set(FRUSTUM_WIDTH / 2, FRUSTUM_HEIGHT / 2, 0);
 		this.batch = batch;
+        enaLoadBackground = true;
 	}
 
 	public void render () {
@@ -45,7 +56,13 @@ public class WorldRenderer {
 	public void renderBackground () {
 		batch.disableBlending();
 		batch.begin();
-		batch.draw(Assets.backgroundRegion, cam.position.x - FRUSTUM_WIDTH / 2, cam.position.y - FRUSTUM_HEIGHT / 2, FRUSTUM_WIDTH,
+
+        if(enaLoadBackground) {
+            loadBackground();
+            enaLoadBackground = false;
+        }
+
+		batch.draw(texture, cam.position.x - FRUSTUM_WIDTH / 2, cam.position.y - FRUSTUM_HEIGHT / 2, FRUSTUM_WIDTH,
 			FRUSTUM_HEIGHT);
 		batch.end();
 	}
@@ -127,4 +144,21 @@ public class WorldRenderer {
 		Castle castle = world.castle;
 		batch.draw(Assets.castle, castle.position.x - 1, castle.position.y - 1, 2, 2);
 	}
+
+    private void loadBackground() {
+        int dimension = GameController.getIsntance().getBackground().getWidth();
+        int dimension2 = GameController.getIsntance().getBackground().getHeight();
+        image = GameController.getIsntance().getBackground();
+
+        int[] pixels = new int[GameController.getIsntance().getBackground().getWidth() * GameController.getIsntance().getBackground().getHeight()];
+        GameController.getIsntance().getBackground().getPixels(pixels, 0, dimension, 0, 0, dimension, dimension2);
+        // Convert from ARGB to RGBA
+        for (int i = 0; i< pixels.length; i++) {
+            int pixel = pixels[i];
+            pixels[i] = (pixel << 8) | ((pixel >> 24) & 0xFF);
+        }
+        pixmap = new Pixmap(GameController.getIsntance().getBackground().getWidth(), GameController.getIsntance().getBackground().getHeight(), Pixmap.Format.RGBA8888);
+        pixmap.getPixels().asIntBuffer().put(pixels);
+        texture = new Texture(pixmap);
+    }
 }
