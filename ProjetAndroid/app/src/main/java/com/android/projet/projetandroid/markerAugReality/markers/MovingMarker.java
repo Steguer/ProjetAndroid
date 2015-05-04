@@ -15,10 +15,10 @@ public class MovingMarker extends AbstractMarker {
     }
 
     public MovingMarker(float[] customColor, MarkerActivity markerActivity) {
-        this("MovingMarker", "moving.patt", 80.0, new double[]{0, 0}, customColor, markerActivity);
+        this("MovingMarker", "style.patt", 80.0, new double[]{0, 0}, customColor, markerActivity);
     }
 
     public MovingMarker(MarkerActivity markerActivity) {
-        this("MovingMarker", "moving.patt", 80.0, new double[]{0, 0}, markerActivity);
+        this("MovingMarker", "style.patt", 80.0, new double[]{0, 0}, markerActivity);
     }
 }
