@@ -110,12 +110,11 @@ public class World {
                 }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
                     Squirrel squirrel = new Squirrel(platform.position.x, platform.position.y
-                            + Squirrel.SQUIRREL_HEIGHT / 2 + rand.nextFloat() / 2);
+                            + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() / 2);
                     squirrels.add(squirrel);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.COIN) {
-                    Coin coin = new Coin(platform.position.x - Coin.COIN_WIDTH, platform.position.y + Coin.COIN_HEIGHT / 2
-                            + rand.nextFloat() / 2);
+                    Coin coin = new Coin(platform.position.x - Coin.COIN_WIDTH, platform.position.y + Coin.COIN_HEIGHT + rand.nextFloat() / 2);
                     coins.add(coin);
                 }
             }

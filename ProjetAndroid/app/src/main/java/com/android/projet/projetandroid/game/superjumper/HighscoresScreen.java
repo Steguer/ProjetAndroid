@@ -36,8 +36,8 @@ public class HighscoresScreen extends ScreenAdapter {
 	public HighscoresScreen (SuperJumper game) {
 		this.game = game;
 
-		guiCam = new OrthographicCamera(320, 480);
-		guiCam.position.set(320 / 2, 480 / 2, 0);
+		guiCam = new OrthographicCamera(480, 320);
+		guiCam.position.set(480 / 2, 320 / 2, 0);
 		backBounds = new Rectangle(0, 0, 64, 64);
 		touchPoint = new Vector3();
 		highScores = new String[5];
@@ -46,7 +46,7 @@ public class HighscoresScreen extends ScreenAdapter {
 			glyphLayout.setText(Assets.font, highScores[i]);
 			xOffset = Math.max(glyphLayout.width, xOffset);
 		}
-		xOffset = 160 - xOffset / 2 + Assets.font.getSpaceWidth() / 2;
+		xOffset = 240 - xOffset / 2 + Assets.font.getSpaceWidth() / 2;
 	}
 
 	public void update () {
@@ -69,14 +69,14 @@ public class HighscoresScreen extends ScreenAdapter {
 		game.batcher.setProjectionMatrix(guiCam.combined);
 		game.batcher.disableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
+		game.batcher.draw(Assets.backgroundRegion, 0, 0, 480, 320);
 		game.batcher.end();
 
 		game.batcher.enableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
+		game.batcher.draw(Assets.highScoresRegion, 240-150, 320 - 60, 300, 33);
 
-		float y = 230;
+		float y = 320-200;
 		for (int i = 4; i >= 0; i--) {
 			Assets.font.draw(game.batcher, highScores[i], xOffset, y);
 			y += Assets.font.getLineHeight();

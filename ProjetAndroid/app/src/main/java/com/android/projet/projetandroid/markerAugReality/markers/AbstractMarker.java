@@ -97,7 +97,7 @@ public abstract class AbstractMarker extends ARObject {
         lastDrew = System.currentTimeMillis();
         detected(xy);
 
-        box.draw(gl, 60, 60, 10);
+        box.draw(gl, 60, 20, 5);
     }
 
     @Override
