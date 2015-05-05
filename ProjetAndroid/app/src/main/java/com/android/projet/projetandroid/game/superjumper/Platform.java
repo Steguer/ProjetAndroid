@@ -19,7 +19,7 @@ package com.android.projet.projetandroid.game.superjumper;
 import com.badlogic.gdx.math.Vector2;
 
 public class Platform extends DynamicGameObject {
-	public static final float PLATFORM_WIDTH = 1;
+	public static final float PLATFORM_WIDTH = 0.9f;
 	public static final float PLATFORM_HEIGHT = 0.5f;
 	public static final int PLATFORM_TYPE_STATIC = 0;
 	public static final int PLATFORM_TYPE_MOVING = 1;
