@@ -46,8 +46,6 @@ public class WorldRenderer {
 	}
 
 	public void render () {
-		if (world.bob.position.y > cam.position.y) cam.position.y = world.bob.position.y;
-		cam.update();
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();
 		renderObjects();
