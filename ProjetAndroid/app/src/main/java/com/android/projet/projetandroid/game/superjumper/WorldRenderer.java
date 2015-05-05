@@ -24,6 +24,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class WorldRenderer {
 	static final float FRUSTUM_WIDTH = 10;
@@ -75,6 +76,18 @@ public class WorldRenderer {
 		renderSquirrels();
 		renderCastle();
 		batch.end();
+
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setProjectionMatrix(cam.combined);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(world.bob.bounds.x, world.bob.bounds.y, world.bob.bounds.width, world.bob.bounds.height);
+
+        for(int i = 0; i<world.platforms.size(); ++i) {
+            shapeRenderer.rect(world.platforms.get(i).bounds.x, world.platforms.get(i).bounds.y, world.platforms.get(i).bounds.width, world.platforms.get(i).bounds.height);
+        }
+
+        shapeRenderer.end();
 	}
 
 	private void renderBob () {
@@ -107,7 +120,7 @@ public class WorldRenderer {
 				keyFrame = Assets.brakingPlatform.getKeyFrame(platform.stateTime, Animation.ANIMATION_NONLOOPING);
 			}
 
-			batch.draw(keyFrame, platform.position.x - 1, platform.position.y - 0.25f, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
+			batch.draw(keyFrame, platform.position.x - Platform.PLATFORM_WIDTH / 2, platform.position.y - 0.25f, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
 		}
 	}
 

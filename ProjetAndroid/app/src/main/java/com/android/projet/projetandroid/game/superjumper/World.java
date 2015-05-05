@@ -182,10 +182,6 @@ public class World {
 				if (bob.bounds.overlaps(platform.bounds)) {
 					bob.hitPlatform();
 					listener.jump();
-                    // Disable platform destruction
-					/*if (rand.nextFloat() > 0.5f) {
-						platform.pulverize();
-					}*/
 					break;
 				}
 			}
