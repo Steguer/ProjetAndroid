@@ -2,11 +2,13 @@ package com.android.projet.projetandroid.markerAugReality.markers;
 
 import android.graphics.Point;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Created by Adrien on 23/04/2015.
  */
 public class Marker {
-    private Point position;
+    private Vector2 position;
     private float width;
     private MarkerType type;
 
@@ -17,17 +19,23 @@ public class Marker {
     }
 
     public Marker(Point position, float width, MarkerType type) {
-        this.position = position;
+        setPosition(position);
         this.width = width;
         this.type = type;
     }
 
-    public Point getPosition() {
+    public Vector2 getPosition() {
         return position;
     }
 
     public void setPosition(Point position) {
-        this.position = position;
+        this.position = new Vector2(0,0);
+        this.position.set(map(position.x, 0, 1920, 0, 10), 15 - map(position.y, 0, 1080, 0, 15));
+    }
+
+    public float map(float x, float in_min, float in_max, float out_min, float out_max)
+    {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
     public float getWidth() {

@@ -15,10 +15,10 @@ public class StyleMarker extends AbstractMarker {
     }
 
     public StyleMarker(float[] customColor, MarkerActivity markerActivity) {
-        this("StyleMarker", "moving.patt", 80.0, new double[]{0, 0}, customColor, markerActivity);
+        this("StyleMarker", "style.patt", 80.0, new double[]{0, 0}, customColor, markerActivity);
     }
 
     public StyleMarker(MarkerActivity markerActivity) {
-        this("StyleMarker", "moving.patt", 80.0, new double[]{0, 0}, markerActivity);
+        this("StyleMarker", "style.patt", 80.0, new double[]{0, 0}, markerActivity);
     }
 }

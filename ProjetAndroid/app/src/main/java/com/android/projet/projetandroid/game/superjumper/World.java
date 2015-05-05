@@ -16,8 +16,6 @@
 
 package com.android.projet.projetandroid.game.superjumper;
 
-import android.graphics.Point;
-
 import com.android.projet.projetandroid.game.GameController;
 import com.android.projet.projetandroid.markerAugReality.markers.Marker;
 import com.android.projet.projetandroid.markerAugReality.markers.MarkerType;
@@ -59,7 +57,7 @@ public class World {
 	public int score;
 	public int state;
 
-    private Point startPosition;
+    private Vector2 startPosition;
 
 	public World (WorldListener listener) {
 		this.platforms = new ArrayList<Platform>();
@@ -80,7 +78,7 @@ public class World {
 
 		generateLevel();
 
-        this.bob = new Bob(startPosition.x/192, startPosition.y/108 + Platform.PLATFORM_HEIGHT);
+		this.bob = new Bob(this.startPosition.x-Bob.BOB_WIDTH,this.startPosition.y+Bob.BOB_HEIGHT);
 
 		this.heightSoFar = 0;
 		this.score = 0;
@@ -94,31 +92,30 @@ public class World {
 		for(int i=0; i<markersPosition.size(); ++i) {
             Platform  platform;
             if(markersPosition.get(i).getType() == MarkerType.MOVING) {
-                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x  / 192, WORLD_HEIGHT - markersPosition.get(i).getPosition().y / 180);
+                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x + Platform.PLATFORM_WIDTH / 2, markersPosition.get(i).getPosition().y - Platform.PLATFORM_HEIGHT / 3);
                 platforms.add(platform);
             }
             else{
-                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x/192, WORLD_HEIGHT - markersPosition.get(i).getPosition().y / 180);
+                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x + Platform.PLATFORM_WIDTH / 2, markersPosition.get(i).getPosition().y - Platform.PLATFORM_HEIGHT / 3);
                 platforms.add(platform);
                 if(markersPosition.get(i).getType() == MarkerType.START) {
-                    this.startPosition = markersPosition.get(i).getPosition();
+                    this.startPosition = new Vector2(platform.position.x, platform.position.y);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.TRAMPOLINE) {
-                    Spring spring = new Spring(platform.position.x, platform.position.y + Platform.PLATFORM_HEIGHT / 2
-                            + Spring.SPRING_HEIGHT / 2);
+                    Spring spring = new Spring(platform.position.x - Spring.SPRING_WIDTH*2, platform.position.y + Spring.SPRING_HEIGHT);
                     springs.add(spring);
                 }
                 if(markersPosition.get(i).getType() == MarkerType.END) {
-                    this.castle = new Castle(markersPosition.get(i).getPosition().x/192, WORLD_HEIGHT - markersPosition.get(i).getPosition().y / 180 + 1);
+                    this.castle = new Castle(platform.position.x, platform.position.y + Castle.CASTLE_HEIGHT / 3 + rand.nextFloat());
                 }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
-                    Squirrel squirrel = new Squirrel(platform.position.x + rand.nextFloat(), platform.position.y
-                            + Squirrel.SQUIRREL_HEIGHT + rand.nextFloat() * 2);
+                    Squirrel squirrel = new Squirrel(platform.position.x - Squirrel.SQUIRREL_WIDTH, platform.position.y
+                            + Squirrel.SQUIRREL_HEIGHT / 2 + rand.nextFloat());
                     squirrels.add(squirrel);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.COIN) {
-                    Coin coin = new Coin(platform.position.x + rand.nextFloat(), platform.position.y + Coin.COIN_HEIGHT
-                            + rand.nextFloat() * 3);
+                    Coin coin = new Coin(platform.position.x - Coin.COIN_WIDTH, platform.position.y + Coin.COIN_HEIGHT / 2
+                            + rand.nextFloat());
                     coins.add(coin);
                 }
             }
