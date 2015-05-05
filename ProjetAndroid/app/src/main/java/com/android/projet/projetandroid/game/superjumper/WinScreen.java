@@ -17,14 +17,14 @@ public class WinScreen extends ScreenAdapter {
 						  "Bob: So all this \nwork for nothing?",
 						  "Princess: I have \ncake and tea!\nWould you like some?",
 						  "Bob: I'd be my \npleasure!",
-						  "And they ate cake\nand drank tea\nhappily ever \nafter\n\n\n\n\n\n\nKära Emma!\nDu är fantastisk!\nDu blev ferdig\n med spelet!"
+						  "And they ate cake\nand drank tea\nhappily ever \nafter"
 			};
 	int currentMessage = 0;
 	
 	public WinScreen(SuperJumper game) {
 		this.game = game;
 		cam = new OrthographicCamera();
-		cam.setToOrtho(false, 320, 480);
+		cam.setToOrtho(false, 480, 320);
 		princess = new TextureRegion(Assets.arrow.getTexture(), 210, 122, -40, 38);
 	}
 	
@@ -45,7 +45,7 @@ public class WinScreen extends ScreenAdapter {
 		game.batcher.draw(Assets.backgroundRegion, 0, 0);
 		game.batcher.draw(Assets.castle, 60, 120, 200, 200);
 		game.batcher.draw(Assets.bobFall.getKeyFrame(0, Animation.ANIMATION_LOOPING), 120, 200);
-		Assets.font.draw(game.batcher, messages[currentMessage], 0, 400, 320, Align.center, false);
+		Assets.font.draw(game.batcher, messages[currentMessage], 60, 120, 320, Align.center, false);
 		game.batcher.draw(princess,150, 200);
 		game.batcher.end();
 	}
