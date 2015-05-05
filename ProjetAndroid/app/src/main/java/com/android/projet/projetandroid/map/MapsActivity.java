@@ -65,8 +65,8 @@ public class MapsActivity extends FragmentActivity {
             if (mMap != null) {
                 setUpMap();
             }
-            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            mMap.setMyLocationEnabled(true);
+            //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            //mMap.setMyLocationEnabled(true);
         }
     }
 
