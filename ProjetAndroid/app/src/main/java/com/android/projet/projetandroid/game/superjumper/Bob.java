@@ -20,7 +20,7 @@ public class Bob extends DynamicGameObject {
 	public static final int BOB_STATE_JUMP = 0;
 	public static final int BOB_STATE_FALL = 1;
 	public static final int BOB_STATE_HIT = 2;
-	public static final float BOB_JUMP_VELOCITY =5;
+	public static final float BOB_JUMP_VELOCITY = 5;
 	public static final float BOB_MOVE_VELOCITY = 10;
 	public static final float BOB_WIDTH = 0.8f;
 	public static final float BOB_HEIGHT = 0.8f;
@@ -73,7 +73,7 @@ public class Bob extends DynamicGameObject {
 	}
 
 	public void hitSpring () {
-		velocity.y = BOB_JUMP_VELOCITY * 1.5f;
+		velocity.y = BOB_JUMP_VELOCITY * 2.0f;
 		state = BOB_STATE_JUMP;
 		stateTime = 0;
 	}

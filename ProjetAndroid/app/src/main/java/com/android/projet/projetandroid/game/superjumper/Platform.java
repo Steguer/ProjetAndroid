@@ -26,8 +26,8 @@ public class Platform extends DynamicGameObject {
 	public static final int PLATFORM_STATE_NORMAL = 0;
 	public static final int PLATFORM_STATE_PULVERIZING = 1;
 	public static final float PLATFORM_PULVERIZE_TIME = 0.2f * 4;
-	public static final float PLATFORM_VELOCITY = 2;
-    public static final float PLATFORM_MOVE = 1;
+	public static final float PLATFORM_VELOCITY = 1.5f;
+    public static final float PLATFORM_MOVE = 0.5f;
 
 	int type;
 	int state;

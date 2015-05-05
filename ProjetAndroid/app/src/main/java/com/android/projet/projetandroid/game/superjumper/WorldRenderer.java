@@ -46,6 +46,7 @@ public class WorldRenderer {
 	}
 
 	public void render () {
+		cam.update();
 		batch.setProjectionMatrix(cam.combined);
 		renderBackground();
 		renderObjects();

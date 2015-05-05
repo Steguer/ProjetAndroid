@@ -21,7 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Squirrel extends DynamicGameObject {
 	public static final float SQUIRREL_WIDTH = 1;
 	public static final float SQUIRREL_HEIGHT = 0.6f;
-	public static final float SQUIRREL_VELOCITY = 1f;
+	public static final float SQUIRREL_VELOCITY = 0.8f;
     public static final float SQUIRREL_MOVE = Platform.PLATFORM_WIDTH;
 
 	float stateTime = 0;

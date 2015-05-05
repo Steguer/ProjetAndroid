@@ -106,16 +106,16 @@ public class World {
                     springs.add(spring);
                 }
                 if(markersPosition.get(i).getType() == MarkerType.END) {
-                    this.castle = new Castle(platform.position.x, platform.position.y + Castle.CASTLE_HEIGHT / 3 + rand.nextFloat());
+                    this.castle = new Castle(platform.position.x, platform.position.y + Castle.CASTLE_HEIGHT / 2 + rand.nextFloat() / 2);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
-                    Squirrel squirrel = new Squirrel(platform.position.x - Squirrel.SQUIRREL_WIDTH, platform.position.y
-                            + Squirrel.SQUIRREL_HEIGHT / 2 + rand.nextFloat());
+                    Squirrel squirrel = new Squirrel(platform.position.x, platform.position.y
+                            + Squirrel.SQUIRREL_HEIGHT / 2 + rand.nextFloat() / 2);
                     squirrels.add(squirrel);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.COIN) {
                     Coin coin = new Coin(platform.position.x - Coin.COIN_WIDTH, platform.position.y + Coin.COIN_HEIGHT / 2
-                            + rand.nextFloat());
+                            + rand.nextFloat() / 2);
                     coins.add(coin);
                 }
             }
