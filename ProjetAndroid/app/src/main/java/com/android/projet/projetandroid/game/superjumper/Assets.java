@@ -40,6 +40,7 @@ public class Assets {
 	public static TextureRegion pause;
 	public static TextureRegion spring;
 	public static TextureRegion castle;
+    public static TextureRegion circleArrow;
 	public static Animation coinAnim;
 	public static Animation bobJump;
 	public static Animation bobFall;
@@ -75,6 +76,7 @@ public class Assets {
 		soundOn = new TextureRegion(items, 64, 0, 64, 64);
 		arrow = new TextureRegion(items, 0, 64, 64, 64);
 		pause = new TextureRegion(items, 64, 64, 64, 64);
+        circleArrow = new TextureRegion(items, 450, 445, 64, 64);
 
 		spring = new TextureRegion(items, 128, 0, 32, 32);
 		castle = new TextureRegion(items, 128, 64, 64, 64);

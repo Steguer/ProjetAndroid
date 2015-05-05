@@ -23,9 +23,11 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.android.projet.projetandroid.game.superjumper.World.WorldListener;
+import com.google.android.gms.wearable.Asset;
 
 public class GameScreen extends ScreenAdapter {
 	static final int GAME_READY = 0;
@@ -45,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
 	Rectangle pauseBounds;
 	Rectangle resumeBounds;
 	Rectangle quitBounds;
+    Rectangle retryBounds;
 	int lastScore;
 	String scoreString;
 
@@ -54,8 +57,8 @@ public class GameScreen extends ScreenAdapter {
 		this.game = game;
 
 		state = GAME_READY;
-		guiCam = new OrthographicCamera(320, 480);
-		guiCam.position.set(320 / 2, 480 / 2, 0);
+		guiCam = new OrthographicCamera(480, 320);
+		guiCam.position.set(480 / 2, 320 / 2, 0);
 		touchPoint = new Vector3();
 		worldListener = new WorldListener() {
 			@Override
@@ -80,9 +83,10 @@ public class GameScreen extends ScreenAdapter {
 		};
 		world = new World(worldListener);
 		renderer = new WorldRenderer(game.batcher, world);
-		pauseBounds = new Rectangle(320 - 64, 480 - 64, 64, 64);
-		resumeBounds = new Rectangle(160 - 96, 240, 192, 36);
-		quitBounds = new Rectangle(160 - 96, 240 - 36, 192, 36);
+		pauseBounds = new Rectangle(480 - 64, 320 - 64, 64, 64);
+		resumeBounds = new Rectangle(240 - 96, 160, 192, 36);
+		quitBounds = new Rectangle(240 - 96, 160 - 36, 192, 36);
+        retryBounds = new Rectangle(480 - 64, 320 - 64, 64, 64);
 		lastScore = 0;
 		scoreString = "SCORE: 0";
 	}
@@ -183,9 +187,18 @@ public class GameScreen extends ScreenAdapter {
 	}
 
 	private void updateGameOver () {
-		if (Gdx.input.justTouched()) {
-			game.setScreen(new MainMenuScreen(game));
-		}
+        if (Gdx.input.justTouched()) {
+            guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            if (retryBounds.contains(touchPoint.x, touchPoint.y)) {
+                Assets.playSound(Assets.clickSound);
+                world = new World(worldListener);
+                renderer = new WorldRenderer(game.batcher, world);
+                state = GAME_READY;
+            }
+            else {
+                game.setScreen(new MainMenuScreen(game));
+            }
+        }
 	}
 
 	public void draw () {
@@ -219,30 +232,31 @@ public class GameScreen extends ScreenAdapter {
 	}
 
 	private void presentReady () {
-		game.batcher.draw(Assets.ready, 160 - 192 / 2, 240 - 32 / 2, 192, 32);
+		game.batcher.draw(Assets.ready, 240 - 192 / 2, 160 - 32 / 2, 192, 32);
 	}
 
 	private void presentRunning () {
-		game.batcher.draw(Assets.pause, 320 - 64, 480 - 64, 64, 64);
-		Assets.font.draw(game.batcher, scoreString, 16, 480 - 20);
+		game.batcher.draw(Assets.pause, 480 - 64, 320 - 64, 64, 64);
+		Assets.font.draw(game.batcher, scoreString, 16, 320 - 20);
 	}
 
 	private void presentPaused () {
-		game.batcher.draw(Assets.pauseMenu, 160 - 192 / 2, 240 - 96 / 2, 192, 96);
-		Assets.font.draw(game.batcher, scoreString, 16, 480 - 20);
+		game.batcher.draw(Assets.pauseMenu, 240 - 192 / 2, 160 - 96 / 2, 192, 96);
+		Assets.font.draw(game.batcher, scoreString, 16, 320 - 20);
 	}
 
 	private void presentLevelEnd () {
 		glyphLayout.setText(Assets.font, "the princess is ...");
-		Assets.font.draw(game.batcher, glyphLayout, 160 - glyphLayout.width / 2, 480 - 40);
+		Assets.font.draw(game.batcher, glyphLayout, 240 - glyphLayout.width / 2, 320 - 40);
 		glyphLayout.setText(Assets.font, "in another castle!");
-		Assets.font.draw(game.batcher, glyphLayout, 160 - glyphLayout.width / 2, 40);
+		Assets.font.draw(game.batcher, glyphLayout, 240 - glyphLayout.width / 2, 40);
 	}
 
 	private void presentGameOver () {
-		game.batcher.draw(Assets.gameOver, 160 - 160 / 2, 240 - 96 / 2, 160, 96);
+        game.batcher.draw(Assets.circleArrow, 480-64, 320-64);
+		game.batcher.draw(Assets.gameOver, 240 - 160 / 2, 160 - 96 / 2, 160, 96);
 		glyphLayout.setText(Assets.font, scoreString);
-		Assets.font.draw(game.batcher, scoreString, 160 - glyphLayout.width / 2, 480 - 20);
+		Assets.font.draw(game.batcher, scoreString, 240 - glyphLayout.width / 2, 320 - 20);
 	}
 
 	@Override
