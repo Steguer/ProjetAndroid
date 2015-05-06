@@ -5,11 +5,16 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.projet.projetandroid.R;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,13 +24,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.android.projet.projetandroid.map.SphericalUtil.computeDistanceBetween;
 
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap;
-    NotificationHandler nHandler;
+    private NotificationHandler nHandler;
 
     static final LatLng UQAC = new LatLng(48.420067, -71.052506);
     static final LatLng UQACEST = new LatLng(48.419957, -71.052006);
@@ -142,7 +161,7 @@ public class MapsActivity extends FragmentActivity {
         mMap.setMyLocationEnabled(true);
         mMap.setIndoorEnabled(true);
 
-
+        getAllLevels();
         mMap.addMarker(new MarkerOptions()
                 .position(UQAC)
                 .title("UQAC")
@@ -180,23 +199,155 @@ public class MapsActivity extends FragmentActivity {
                 return true;
             }
         });
+        me = this;
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                Location cur = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location cur = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                LatLng curPosition = new LatLng(cur.getLatitude(), cur.getLongitude());
+                if (poss != null) {
+                    for (LatLng pos : poss) {
+                        double diff = computeDistanceBetween(pos, curPosition);
+                        if (diff < 3) {
+                            nHandler.getInstance(getApplicationContext()).createSimpleNotification(me);
+                            return;
+                        }
+                    }
+                }
+            }
+        });
 
-        LatLng curPosition = new LatLng(cur.getLatitude(),cur.getLongitude());
 
 
-        double diff = computeDistanceBetween(UQAC,curPosition);
-        double diff1 = computeDistanceBetween(UQACEST,curPosition);
-        double diff2 = computeDistanceBetween(UQACOUEST,curPosition);
-        double diff3 = computeDistanceBetween(UQACCentreSocial,curPosition);
-        double diff4 = computeDistanceBetween(CEGEP,curPosition);
+    }
+private MapsActivity me;
+    private void getAllLevels() {
+        String stringUrl = "http://progmobileuqac.olympe.in/ville.php?mode=get";
+        requete(stringUrl);
+    }
 
-        if(diff < 3 || diff1 < 3 || diff2 < 3 || diff3 < 3 || diff4 < 3 ){
-            nHandler.createSimpleNotification(this);
+    private void requete(String url) {
+        // Gets the URL from the UI's text field.
+        String stringUrl = url;
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new DownloadWebpageTask().execute(stringUrl);
+        } else {
+            Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
         }
+    }
 
+    // Uses AsyncTask to create a task away from the main UI thread. This task takes a
+    // URL string and uses it to create an HttpUrlConnection. Once the connection
+    // has been established, the AsyncTask downloads the contents of the webpage as
+    // an InputStream. Finally, the InputStream is converted into a string, which is
+    // displayed in the UI by the AsyncTask's onPostExecute method.
+    private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            // params comes from the execute() call: params[0] is the url.
+            try {
+                return downloadUrl(urls[0]);
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
+            }
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            ArrayList<String[]> niveaux = jsonParsing(result);
+            addMarkers(niveaux);
+
+            //textView.setText(p);
+        }
+    }
+private List<LatLng> poss;
+    private void addMarkers(ArrayList<String[]> niveaux) {
+        poss = new ArrayList<>();
+        for(String[] niv : niveaux) {
+            LatLng pos = new LatLng(Double.valueOf(niv[0]), Double.valueOf(niv[1]));
+            poss.add(pos);
+            mMap.addMarker(new MarkerOptions()
+                    .position(pos)
+                    .title(niv[2])
+                    .snippet(niv[3]+"&&"+niv[4]+"&&f")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
+        }
+        //p += "lat "+niv[0]+" lon "+niv[1]+" nom "+niv[2]+" joueur "+niv[3]+" date "+niv[4]+"\n";
+    }
+
+    private String downloadUrl(String myurl) throws IOException {
+        InputStream is = null;
+        //
+        int len = 500;
+
+        try {
+            URL url = new URL(myurl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000 /* milliseconds */);
+            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            // Starts the query
+            conn.connect();
+            int response = conn.getResponseCode();
+            is = conn.getInputStream();
+
+            // Convert the InputStream into a string
+            String contentAsString = readIt(is, len);
+            return contentAsString;
+
+            // Makes sure that the InputStream is closed after the app is
+            // finished using it.
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+    }
+
+    public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "iso-8859-1"), 8);
+        String line = null, result = "";
+        while ((line = reader.readLine()) != null) {
+            result += line + "\n";
+        }
+        return result;
+    }
+
+    private ArrayList<String[]> jsonParsing(String toParse) {
+        // Parse les données JSON
+        ArrayList<String[]> niveaux = new ArrayList<String[]>();
+        try{
+            JSONArray jArray = new JSONArray(toParse);
+            for(int i=0;i<jArray.length();i++){
+                String[] niv = new String[5];
+                JSONObject json_data = jArray.getJSONObject(i);
+                // Affichage ID_ville et Nom_ville dans le LogCat
+                String lat = ((Double)json_data.getDouble("lat")).toString();
+                String lon = ((Double)json_data.getDouble("lon")).toString();
+                String nom = json_data.getString("nom");
+                String pseudo = json_data.getString("joueur");
+                String date = json_data.getString("date");
+                Log.i("log_tag", "lat: " + json_data.getDouble("lat") +
+                                ", lon: " + json_data.getDouble("lon")
+                );
+                niv[0] = lat;
+                niv[1] = lon;
+                niv[2] = nom;
+                niv[3] = pseudo;
+                niv[4] = date;
+                niveaux.add(niv);
+            }
+        }catch(JSONException e){
+            Log.e("log_tag", "Error parsing data " + e.toString());
+        }
+        return niveaux;
     }
 
 }

@@ -11,4 +11,9 @@
     <string name="marker_detected">Detected markers : </string>
     <string name="marker_required">Required markers :</string>
     <string name="take_picture">Taking picture, please don\'t move.</string>
+
+    <string name="save">Save level</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="name">Level name</string>
+    <string name="title_activity_save_level">SaveLevelActivity</string>
 </resources>

@@ -18,6 +18,7 @@ package com.android.projet.projetandroid.game.superjumper;
 
 import com.android.projet.projetandroid.game.GameController;
 import com.android.projet.projetandroid.map.MapsActivity;
+import com.android.projet.projetandroid.map.SaveLevelActivity;
 import com.android.projet.projetandroid.markerAugReality.MarkerActivity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -73,7 +74,7 @@ public class MainMenuScreen extends ScreenAdapter {
 			}
             if (saveBounds.contains(touchPoint.x, touchPoint.y)) {
                 Assets.playSound(Assets.clickSound);
-
+                game.actionResolver.launchActivity(SaveLevelActivity.class);
                 // Add here the behavior fot a click on save
 
                 return;

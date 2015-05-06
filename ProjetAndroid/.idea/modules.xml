@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MapUtil/MapUtil.iml" filepath="$PROJECT_DIR$/MapUtil/MapUtil.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProjetAndroid.iml" filepath="$PROJECT_DIR$/ProjetAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/android-maps-utils/android-maps-utils.iml" filepath="$PROJECT_DIR$/libs/android-maps-utils/android-maps-utils.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/libs.iml" filepath="$PROJECT_DIR$/libs/libs.iml" />
     </modules>
   </component>
 </project>
-
