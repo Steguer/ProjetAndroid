@@ -1,7 +1,10 @@
 package com.android.projet.projetandroid.map;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -16,10 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static com.android.projet.projetandroid.map.SphericalUtil.computeDistanceBetween;
+
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap;
+    NotificationHandler nHandler;
 
     static final LatLng UQAC = new LatLng(48.420067, -71.052506);
     static final LatLng UQACEST = new LatLng(48.419957, -71.052006);
@@ -174,6 +180,22 @@ public class MapsActivity extends FragmentActivity {
                 return true;
             }
         });
+
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location cur = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        LatLng curPosition = new LatLng(cur.getLatitude(),cur.getLongitude());
+
+
+        double diff = computeDistanceBetween(UQAC,curPosition);
+        double diff1 = computeDistanceBetween(UQACEST,curPosition);
+        double diff2 = computeDistanceBetween(UQACOUEST,curPosition);
+        double diff3 = computeDistanceBetween(UQACCentreSocial,curPosition);
+        double diff4 = computeDistanceBetween(CEGEP,curPosition);
+
+        if(diff < 3 || diff1 < 3 || diff2 < 3 || diff3 < 3 || diff4 < 3 ){
+            nHandler.createSimpleNotification(this);
+        }
 
     }
 
