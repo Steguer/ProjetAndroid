@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.projet.projetandroid.R;
@@ -14,7 +15,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 
 
 public class MapsActivity extends FragmentActivity {
@@ -60,23 +60,23 @@ public class MapsActivity extends FragmentActivity {
                 // Getting the position from the marker
                 LatLng latLng = arg0.getPosition();
 
-                // Getting reference to the TextView to set latitude
-                TextView tvLat = (TextView) v.findViewById(R.id.textViewUsername);
+                String[] s = arg0.getSnippet().split("&&");
+                TextView tvUser = (TextView) v.findViewById(R.id.textViewUsername);
+                tvUser.setText(s[0]);
 
                 // Getting reference to the TextView to set longitude
                 TextView tvLng = (TextView) v.findViewById(R.id.textViewRealDate);
+                tvLng.setText(s[1]);
 
-                // Setting the latitude
-                tvLat.setText("Patrick");
-
-                // Setting the longitude
-                tvLng.setText("18/04/2015");
+                ImageView iv = (ImageView) v.findViewById(R.id.imageViewOk);
+                iv.setVisibility(s[2].equals("t") ? View.VISIBLE : View.INVISIBLE);
 
                 TextView tvG = (TextView) v.findViewById(R.id.textViewGameName);
                 Typeface type = Typeface.createFromAsset(getAssets(), "RetrovilleNC.ttf");
                 tvG.setTextColor(Color.RED);
                 tvG.setTypeface(type);
                 tvG.setTextSize(20);
+                tvG.setText(arg0.getTitle());
                 TextView tvH = (TextView) v.findViewById(R.id.textViewHighScores);
                 tvH.setTextColor(Color.RED);
                 tvH.setTypeface(type);
@@ -140,38 +140,32 @@ public class MapsActivity extends FragmentActivity {
         mMap.addMarker(new MarkerOptions()
                 .position(UQAC)
                 .title("UQAC")
-                .snippet("Informations")
+                .snippet("Jean&&02/04/2015&&f")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
 
         mMap.addMarker(new MarkerOptions()
                 .position(UQACEST)
                 .title("UQAC Porte Est")
-                .snippet("Informations")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
+                .snippet("Madeleine&&15/04/2015&&t")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.heart_bit2)));
 
         mMap.addMarker(new MarkerOptions()
                 .position(UQACOUEST)
                 .title("UQAC Porte Ouest")
-                .snippet("Informations")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
+                .snippet("Guy&&10/04/2015&&t")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.heart_bit2)));
 
         mMap.addMarker(new MarkerOptions()
                 .position(UQACCentreSocial)
                 .title("UQAC Centre Social")
-                .snippet("Informations")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
-
-        mMap.addMarker(new MarkerOptions()
-                .position(UQACSalleCours)
-                .title("UQAC Salle cours")
-                .snippet("Informations")
+                .snippet("Michel&&11/04/2015&&f")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
 
         mMap.addMarker(new MarkerOptions()
                 .position(CEGEP)
                 .title("Cegep de Chicoutimi")
-                .snippet("Informations")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
+                .snippet("Patrick&&08/04/2015&&t")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.heart_bit2)));
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override

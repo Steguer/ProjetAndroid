@@ -30,8 +30,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:scaleType="fitXY"
-            android:id="@+id/imageView4"
-            android:src="@drawable/earth_bit"
+            android:id="@+id/imageViewOk"
+            android:src="@drawable/heart_bit"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="5dp" />
     </LinearLayout>
