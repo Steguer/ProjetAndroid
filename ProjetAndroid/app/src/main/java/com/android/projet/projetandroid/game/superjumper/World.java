@@ -78,7 +78,7 @@ public class World {
 
 		generateLevel();
 
-		this.bob = new Bob(this.startPosition.x-Bob.BOB_WIDTH,this.startPosition.y+Bob.BOB_HEIGHT);
+		this.bob = new Bob(this.startPosition.x, this.startPosition.y+Bob.BOB_HEIGHT);
 
 		this.heightSoFar = 0;
 		this.score = 0;
@@ -102,11 +102,11 @@ public class World {
                     this.startPosition = new Vector2(platform.position.x, platform.position.y);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.TRAMPOLINE) {
-                    Spring spring = new Spring(platform.position.x - Spring.SPRING_WIDTH*2, platform.position.y + Spring.SPRING_HEIGHT);
+                    Spring spring = new Spring(platform.position.x, platform.position.y + Spring.SPRING_HEIGHT);
                     springs.add(spring);
                 }
                 if(markersPosition.get(i).getType() == MarkerType.END) {
-                    this.castle = new Castle(platform.position.x, platform.position.y + Castle.CASTLE_HEIGHT / 2 + rand.nextFloat() / 2);
+                    this.castle = new Castle(platform.position.x, platform.position.y + Castle.CASTLE_HEIGHT / 2);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.ENEMY) {
                     Squirrel squirrel = new Squirrel(platform.position.x, platform.position.y
