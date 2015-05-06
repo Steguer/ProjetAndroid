@@ -92,11 +92,11 @@ public class World {
 		for(int i=0; i<markersPosition.size(); ++i) {
             Platform  platform;
             if(markersPosition.get(i).getType() == MarkerType.MOVING) {
-                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x + Platform.PLATFORM_WIDTH / 2, markersPosition.get(i).getPosition().y - Platform.PLATFORM_HEIGHT / 3);
+                platform = new Platform(Platform.PLATFORM_TYPE_MOVING, markersPosition.get(i).getPosition().x , markersPosition.get(i).getPosition().y - Platform.PLATFORM_HEIGHT / 3);
                 platforms.add(platform);
             }
             else{
-                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x + Platform.PLATFORM_WIDTH / 2, markersPosition.get(i).getPosition().y - Platform.PLATFORM_HEIGHT / 3);
+                platform = new Platform(Platform.PLATFORM_TYPE_STATIC, markersPosition.get(i).getPosition().x , markersPosition.get(i).getPosition().y - Platform.PLATFORM_HEIGHT / 3);
                 platforms.add(platform);
                 if(markersPosition.get(i).getType() == MarkerType.START) {
                     this.startPosition = new Vector2(platform.position.x, platform.position.y);
@@ -114,7 +114,7 @@ public class World {
                     squirrels.add(squirrel);
                 }
                 if (markersPosition.get(i).getType() == MarkerType.COIN) {
-                    Coin coin = new Coin(platform.position.x - Coin.COIN_WIDTH, platform.position.y + Coin.COIN_HEIGHT + rand.nextFloat() / 2);
+                    Coin coin = new Coin(platform.position.x, platform.position.y + Coin.COIN_HEIGHT + rand.nextFloat() / 2);
                     coins.add(coin);
                 }
             }

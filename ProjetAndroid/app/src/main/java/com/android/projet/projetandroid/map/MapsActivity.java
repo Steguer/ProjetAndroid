@@ -67,10 +67,10 @@ public class MapsActivity extends FragmentActivity {
                 TextView tvLng = (TextView) v.findViewById(R.id.textViewRealDate);
 
                 // Setting the latitude
-                tvLat.setText("Latitude:" + latLng.latitude);
+                tvLat.setText("Patrick");
 
                 // Setting the longitude
-                tvLng.setText("Longitude:" + latLng.longitude);
+                tvLng.setText("18/04/2015");
 
                 TextView tvG = (TextView) v.findViewById(R.id.textViewGameName);
                 Typeface type = Typeface.createFromAsset(getAssets(), "RetrovilleNC.ttf");
