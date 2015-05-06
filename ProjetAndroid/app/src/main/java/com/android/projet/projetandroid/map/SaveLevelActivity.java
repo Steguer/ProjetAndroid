@@ -2,29 +2,30 @@ package com.android.projet.projetandroid.map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
+import com.android.projet.projetandroid.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 
 public class SaveLevelActivity extends Activity  implements
-        ConnectionCallbacks, OnConnectionFailedListener{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private EditText nameField;
     private EditText pseudoField;
 
@@ -40,7 +41,7 @@ public class SaveLevelActivity extends Activity  implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_save_level, menu);
+        //getMenuInflater().inflate(R.menu.menu_save_level, menu);
         return true;
     }
 
@@ -48,18 +49,12 @@ public class SaveLevelActivity extends Activity  implements
     // Before attempting to fetch the URL, makes sure that there is a network connection.
     public void myClickHandler(View view) {
         //Get position
-        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location mLastLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double lat = 48.424268, lon = -71.052007;
         if (mLastLocation != null) {
-            lat = String.valueOf(mLastLocation.getLatitude());
-            lon = String.valueOf(mLastLocation.getLongitude());
+            lat = mLastLocation.getLatitude();
+            lon = mLastLocation.getLongitude();
         }
         String nom = nameField.getText().toString(), pseudo = pseudoField.getText().toString();
         String stringUrl = "http://progmobileuqac.olympe.in/ville.php?mode=insert&lat=" + lat
@@ -79,6 +74,21 @@ public class SaveLevelActivity extends Activity  implements
         } else {
             Toast.makeText(getApplicationContext(), "No network connection available.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a

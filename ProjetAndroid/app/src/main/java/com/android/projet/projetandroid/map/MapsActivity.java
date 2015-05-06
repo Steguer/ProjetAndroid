@@ -156,7 +156,7 @@ public class MapsActivity extends FragmentActivity {
         mMap.setIndoorEnabled(true);
 
         getAllLevels();
-        /*mMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions()
                 .position(UQAC)
                 .title("UQAC")
                 .snippet("Jean&&02/04/2015&&f")
@@ -184,7 +184,7 @@ public class MapsActivity extends FragmentActivity {
                 .position(CEGEP)
                 .title("Cegep de Chicoutimi")
                 .snippet("Patrick&&08/04/2015&&t")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.heart_bit2)));*/
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.heart_bit2)));
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -242,12 +242,12 @@ public class MapsActivity extends FragmentActivity {
 
     private void addMarkers(ArrayList<String[]> niveaux) {
         for(String[] niv : niveaux) {
-            LatLng pos = new LatLng(niv[0], niv[1]);
+            LatLng pos = new LatLng(Double.valueOf(niv[0]), Double.valueOf(niv[1]));
             mMap.addMarker(new MarkerOptions()
                     .position(pos)
                     .title(niv[2])
-                    .snippet(niv[3]+"&&"+niv[4]+"&&t")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.heart_bit2)));
+                    .snippet(niv[3]+"&&"+niv[4]+"&&f")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
         }
         //p += "lat "+niv[0]+" lon "+niv[1]+" nom "+niv[2]+" joueur "+niv[3]+" date "+niv[4]+"\n";
     }
