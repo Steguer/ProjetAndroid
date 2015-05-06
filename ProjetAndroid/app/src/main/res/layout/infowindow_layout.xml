@@ -1,35 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:background="@android:color/transparent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
     android:id="@+id/marker_layout"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="250dp"
     android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Game name"
+        android:id="@+id/textViewGameName"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
 
     <LinearLayout
         android:id="@+id/station_info_layout"
-        android:layout_width="205dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+id/marker_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:id="@+id/map_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/castle"
+            android:layout_marginLeft="5dp" />
 
-        <TextView
-            android:id="@+id/marker_label"
-            android:layout_marginLeft="5dp"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold" />
+            android:paddingTop="2dp"
+            android:paddingLeft="5dp">
+
+            <TextView
+                android:id="@+id/textViewAddedBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Added by" />
+
+            <TextView
+                android:id="@+id/textViewUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="a user"
+                android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/textViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Date" />
+
+            <TextView
+                android:id="@+id/textViewRealDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="06/05/2015"
+                android:paddingLeft="10dp" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/another_label"
-        android:layout_marginLeft="5dp"
+        android:id="@+id/textViewHighScores"
+        android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="Highscores"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:paddingLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No highscores yet."
+        android:id="@+id/textView"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="10dp" />
 
 </LinearLayout>
+    </LinearLayout>
