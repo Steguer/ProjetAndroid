@@ -77,14 +77,25 @@ public class WorldRenderer {
 		renderCastle();
 		batch.end();
 
+        // Test bounding boxs to debug
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(world.castle.bounds.x, world.castle.bounds.y, world.castle.bounds.width, world.castle.bounds.height);
         shapeRenderer.rect(world.bob.bounds.x, world.bob.bounds.y, world.bob.bounds.width, world.bob.bounds.height);
 
+        for(int i = 0; i<world.springs.size(); ++i) {
+            shapeRenderer.rect(world.springs.get(i).bounds.x, world.springs.get(i).bounds.y, world.springs.get(i).bounds.width, world.springs.get(i).bounds.height);
+        }
         for(int i = 0; i<world.platforms.size(); ++i) {
             shapeRenderer.rect(world.platforms.get(i).bounds.x, world.platforms.get(i).bounds.y, world.platforms.get(i).bounds.width, world.platforms.get(i).bounds.height);
+        }
+        for(int i = 0; i<world.squirrels.size(); ++i) {
+            shapeRenderer.rect(world.squirrels.get(i).bounds.x, world.squirrels.get(i).bounds.y, world.squirrels.get(i).bounds.width, world.squirrels.get(i).bounds.height);
+        }
+        for(int i = 0; i<world.coins.size(); ++i) {
+            shapeRenderer.rect(world.coins.get(i).bounds.x, world.coins.get(i).bounds.y, world.coins.get(i).bounds.width, world.coins.get(i).bounds.height);
         }
 
         shapeRenderer.end();
@@ -120,7 +131,7 @@ public class WorldRenderer {
 				keyFrame = Assets.brakingPlatform.getKeyFrame(platform.stateTime, Animation.ANIMATION_NONLOOPING);
 			}
 
-			batch.draw(keyFrame, platform.position.x - Platform.PLATFORM_WIDTH / 2, platform.position.y - 0.25f, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
+			batch.draw(keyFrame, platform.position.x - Platform.PLATFORM_WIDTH / 2, platform.position.y - Platform.PLATFORM_HEIGHT / 2, Platform.PLATFORM_WIDTH, Platform.PLATFORM_HEIGHT);
 		}
 	}
 
@@ -128,14 +139,14 @@ public class WorldRenderer {
 		int len = world.springs.size();
 		for (int i = 0; i < len; i++) {
 			Spring spring = world.springs.get(i);
-			batch.draw(Assets.spring, spring.position.x - 0.5f, spring.position.y - 0.5f, 1, 1);
+			batch.draw(Assets.spring, spring.position.x - (Spring.SPRING_WIDTH + 0.3f) / 2, spring.position.y - Platform.PLATFORM_HEIGHT + 0.1f, Spring.SPRING_WIDTH + 0.3f, Spring.SPRING_HEIGHT + 1);
 		}
 
 		len = world.coins.size();
 		for (int i = 0; i < len; i++) {
 			Coin coin = world.coins.get(i);
 			TextureRegion keyFrame = Assets.coinAnim.getKeyFrame(coin.stateTime, Animation.ANIMATION_LOOPING);
-			batch.draw(keyFrame, coin.position.x - 0.5f, coin.position.y - 0.5f, 1, 1);
+			batch.draw(keyFrame, coin.position.x - Coin.COIN_WIDTH / 2, coin.position.y - Coin.COIN_HEIGHT / 2, Coin.COIN_WIDTH, Coin.COIN_HEIGHT);
 		}
 	}
 
@@ -154,7 +165,7 @@ public class WorldRenderer {
 
 	private void renderCastle () {
 		Castle castle = world.castle;
-		batch.draw(Assets.castle, castle.position.x - 1, castle.position.y - 1, Castle.CASTLE_WIDTH, Castle.CASTLE_HEIGHT);
+		batch.draw(Assets.castle, castle.position.x - Castle.CASTLE_WIDTH / 2, castle.position.y - Castle.CASTLE_HEIGHT / 2, Castle.CASTLE_WIDTH, Castle.CASTLE_HEIGHT);
 	}
 
     private void loadBackground() {
