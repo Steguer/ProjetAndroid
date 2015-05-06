@@ -254,6 +254,7 @@ public class MapsActivity extends FragmentActivity {
 
     private String downloadUrl(String myurl) throws IOException {
         InputStream is = null;
+        //
         int len = 500;
 
         try {
