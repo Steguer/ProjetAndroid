@@ -1,19 +1,19 @@
 package com.android.projet.projetandroid.map;
 
-import android.support.v4.app.FragmentActivity;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.projet.projetandroid.R;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
@@ -26,6 +26,7 @@ public class MapsActivity extends FragmentActivity {
     static final LatLng UQACOUEST = new LatLng(48.420357, -71.053006);
     static final LatLng CEGEP = new LatLng(48.424268, -71.052007);
     static final LatLng UQACCentreSocial = new LatLng(48.419900,-71.052700);
+    static final LatLng UQACSalleCours = new LatLng(48.420067,-71.052506);
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +34,59 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        // Getting reference to the SupportMapFragment of activity_main.xml
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        // Getting GoogleMap object from the fragment
+        mMap = mapFragment.getMap();
+
+        // Setting a custom info window adapter for the google map
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            // Use default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            // Defines the contents of the InfoWindow
+            @Override
+            public View getInfoContents(Marker arg0) {
+
+                // Getting view from the layout file info_window_layout
+                View v = getLayoutInflater().inflate(R.layout.infowindow_layout, null);
+
+                // Getting the position from the marker
+                LatLng latLng = arg0.getPosition();
+
+                // Getting reference to the TextView to set latitude
+                TextView tvLat = (TextView) v.findViewById(R.id.textViewUsername);
+
+                // Getting reference to the TextView to set longitude
+                TextView tvLng = (TextView) v.findViewById(R.id.textViewRealDate);
+
+                // Setting the latitude
+                tvLat.setText("Latitude:" + latLng.latitude);
+
+                // Setting the longitude
+                tvLng.setText("Longitude:" + latLng.longitude);
+
+                TextView tvG = (TextView) v.findViewById(R.id.textViewGameName);
+                Typeface type = Typeface.createFromAsset(getAssets(), "RetrovilleNC.ttf");
+                tvG.setTextColor(Color.RED);
+                tvG.setTypeface(type);
+                tvG.setTextSize(20);
+                TextView tvH = (TextView) v.findViewById(R.id.textViewHighScores);
+                tvH.setTextColor(Color.RED);
+                tvH.setTypeface(type);
+                tvH.setTextSize(18);
+
+                // Returning the view containing InfoWindow contents
+                return v;
+
+            }
+        });
     }
 
     @Override
@@ -78,6 +132,10 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
 
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setMyLocationEnabled(true);
+        mMap.setIndoorEnabled(true);
+
 
         mMap.addMarker(new MarkerOptions()
                 .position(UQAC)
@@ -100,6 +158,12 @@ public class MapsActivity extends FragmentActivity {
         mMap.addMarker(new MarkerOptions()
                 .position(UQACCentreSocial)
                 .title("UQAC Centre Social")
+                .snippet("Informations")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(UQACSalleCours)
+                .title("UQAC Salle cours")
                 .snippet("Informations")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.castle)));
 
