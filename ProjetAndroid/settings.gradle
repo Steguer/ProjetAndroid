@@ -1,1 +1,2 @@
 include ':app'
+include 'MapUtil', ':libs:android-maps-utils'
