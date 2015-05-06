@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.maps.android;
+package com.android.projet.projetandroid.map;
 
 import static java.lang.Math.*;
 
