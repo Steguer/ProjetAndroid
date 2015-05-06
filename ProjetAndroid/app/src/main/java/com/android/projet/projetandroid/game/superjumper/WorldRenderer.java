@@ -78,7 +78,7 @@ public class WorldRenderer {
 		batch.end();
 
         // Test bounding boxs to debug
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        /*ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -98,7 +98,7 @@ public class WorldRenderer {
             shapeRenderer.rect(world.coins.get(i).bounds.x, world.coins.get(i).bounds.y, world.coins.get(i).bounds.width, world.coins.get(i).bounds.height);
         }
 
-        shapeRenderer.end();
+        shapeRenderer.end();*/
 	}
 
 	private void renderBob () {
