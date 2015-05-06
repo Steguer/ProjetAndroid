@@ -31,14 +31,14 @@ buildscript {
     } else throw new GradleException("Unable to retrieve latest versions, please check your internet connection")
 
     ext {
-        gdxVersion = json.libgdxSnapshot
-        roboVMVersion = json.robovmVersion
-        roboVMGradleVersion = json.robovmPluginVersion
-        androidToolsVersion = json.androidBuildtoolsVersion
-        androidSDKVersion = json.androidSDKVersion
-        androidGradleToolsVersion = json.androidGradleToolVersion
-        gwtVersion = json.gwtVersion
-        gwtGradleVersion = json.gwtPluginVersion
+        gdxVersion = "1.5.7-SNAPSHOT"
+        roboVMVersion = "1.0.0"
+        roboVMGradleVersion = "1.0.0"
+        androidToolsVersion = "20.0.0"
+        androidSDKVersion = "20"
+        androidGradleToolsVersion = "1.0.0"
+        gwtVersion = "2.6.0"
+        gwtGradleVersion = "0.6"
     }
 
     repositories {
